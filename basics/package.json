@@ -1,0 +1,15 @@
+{
+	"name": "basics",
+	"version": "1.0.0",
+	"description": "NodeJS basic commands",
+	"main": "app.js",
+	"scripts": {
+		"start": "nodemon app.js",
+		"hello": "echo 1"
+	},
+	"author": "Maximiliano Urbina Rangel",
+	"license": "ISC",
+	"dependencies": {
+		"nodemon": "^2.0.15"
+	}
+}
