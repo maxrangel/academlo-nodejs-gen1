@@ -1,4 +1,27 @@
+* {
+	background-color: #333;
+}
+
 .title {
 	font-size: 26px;
 	color: red;
+}
+
+.login {
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	justify-content: center;
+
+	width: 500px;
+	margin: auto;
+}
+
+.login__input {
+	width: 300px;
+	background-color: white;
+}
+
+.login__button {
+	background-color: white;
 }

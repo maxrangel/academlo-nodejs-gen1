@@ -5,6 +5,10 @@ const server = http.createServer((req, res) => {
 	const url = req.url;
 	const method = req.method;
 
+	// HTTP verbs: GET, POST, PATCH, PUT, DELETE
+
+	// Server side rendering -> RESTful API
+
 	if (url === '/') {
 		res.setHeader('Content-Type', 'text/html');
 		res.write('<html>');
@@ -42,8 +46,14 @@ const server = http.createServer((req, res) => {
 			// How the data looks like -> email=max%40test.com&password=1234
 
 			// TASK: From parsed body, get the email value and the password value, and store them in these variables
-			const email = '';
-			const password = '';
+			const [email, password] = parsedBody.split('&');
+
+			// [email, max%40test.com]
+			const parsedEmail = email.split('=')[1].replace('%40', '@');
+
+			const parsedPassword = password.split('=')[1];
+
+			console.log(`Email: ${parsedEmail} / password: ${parsedPassword}`);
 		});
 
 		return res.end();
@@ -52,5 +62,5 @@ const server = http.createServer((req, res) => {
 	res.end();
 });
 
-// http://localhost:4000
+// http://localhost:4000/
 server.listen(4000);
