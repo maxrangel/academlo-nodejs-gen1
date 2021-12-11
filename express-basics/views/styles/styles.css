@@ -7,6 +7,10 @@
 	color: red;
 }
 
+.img-container {
+	width: 500px;
+}
+
 .login {
 	display: flex;
 	flex-direction: column;

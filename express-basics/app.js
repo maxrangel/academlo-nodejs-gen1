@@ -15,7 +15,11 @@ app.use(express.json());
 app.get('/', (req, res) => {
 	const indexPath = path.join(__dirname, 'views', 'index.html');
 
+	// 2** -> Successful responses
+	// 4** -> Client error codes
+	// 5** -> Server side errors
 	res.status(200).sendFile(indexPath);
+	// res.status(200).sendFile(pathIndex); -> This will cause a 500 error code
 	// res.status(200).json({ status: 'success' });
 });
 
@@ -45,8 +49,6 @@ app.post('/login', (req, res) => {
 	// If the credentials are wrong, send 500 status to client
 	res.status(500).json({ status: 'error', data: { message: 'Unauthorized' } });
 });
-
-// Middleware
 
 // Run server on port 4000
 const PORT = 4000;
