@@ -6,14 +6,6 @@ const app = express();
 app.use(express.urlencoded());
 app.use(express.json());
 
-const authMiddleware = (req, res, next) => {
-	console.log(
-		'Middleware #2: Validar datos del usuario (que tenga el nivel de acceso)'
-	);
-
-	next();
-};
-
 app.get(
 	'/',
 	(req, res, next) => {
@@ -21,7 +13,13 @@ app.get(
 
 		next();
 	},
-	authMiddleware,
+	(req, res, next) => {
+		console.log(
+			'Middleware #2: Validar datos del usuario (que tenga el nivel de acceso)'
+		);
+
+		next();
+	},
 	(req, res, next) => {
 		// Save, fetch, update data...
 
@@ -29,10 +27,20 @@ app.get(
 	}
 );
 
-app.post('/new-todo', authMiddleware, (req, res, next) => {
-	console.log(req.body);
-	res.status(200).json({ status: 'A new post has been created' });
-});
+app.post(
+	'/new-todo',
+	(req, res, next) => {
+		console.log(
+			'Middleware #2: Validar datos del usuario (que tenga el nivel de acceso)'
+		);
+
+		next();
+	},
+	(req, res, next) => {
+		console.log(req.body);
+		res.status(200).json({ status: 'A new post has been created' });
+	}
+);
 
 app.listen(4000, () => {
 	console.log('Express app running!');

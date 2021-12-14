@@ -7,8 +7,6 @@ const server = http.createServer((req, res) => {
 
 	// HTTP verbs: GET, POST, PATCH, PUT, DELETE
 
-	// Server side rendering -> RESTful API
-
 	// Endpoint -> Es una URL expuesta por nuestro por nuestro servidor para recibir peticiones
 	if (url === '/') {
 		res.setHeader('Content-Type', 'text/html');
