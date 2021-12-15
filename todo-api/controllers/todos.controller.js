@@ -4,7 +4,18 @@ const todos = [
 ];
 
 exports.getAllTodos = (req, res, next) => {
+  // Get data from db
+
   res.status(200).json({ status: 'success', data: { todos } })
+}
+
+exports.getTodoById = (req, res, next) => {
+  const { id } = req.params;
+
+  // Finds todo given an id
+  const todo = todos.find(todo => todo.id === +id)
+
+  res.status(200).json({ status: 'success', data: { todo } })
 }
 
 exports.createTodo = (req, res, next) => {
@@ -27,6 +38,28 @@ exports.createTodo = (req, res, next) => {
   res.status(201).json({ status: 'success', data: { newTodo } })
 }
 
-const updateTodo = (req, res, next) => {
+exports.updateTodo = (req, res, next) => {
   const { id } = req.params
+  const { content } = req.body
+
+  // Find the todo with a given id
+  const todo = todos.find(todo => todo.id === +id)
+
+  // Update content of todo with the new one
+  todo.content = content
+
+  // Return a response to the user
+  res.status(200).json({
+    status: 'success', data: { updatedTodo: todo }
+  })
+}
+
+exports.deleteTodo = (req, res, next) => {
+  const { id } = req.params
+
+  const todoIndex = todos.findIndex(todo => todo.id === +id)
+
+  todos.splice(todoIndex, 1)
+
+  res.status(200).json({ status: 'success', data: { result } })
 }
