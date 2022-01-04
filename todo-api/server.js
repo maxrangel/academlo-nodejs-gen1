@@ -7,9 +7,12 @@ const { app } = require('./app');
 db.sync()
 	.then(() => {
 		console.log('Database connected');
+		startServer();
 	})
 	.catch(err => console.log(err));
 
-app.listen(4000, () => {
-	console.log('To Do API running!');
-});
+const startServer = () => {
+	app.listen(4000, () => {
+		console.log('To Do API running!');
+	});
+};

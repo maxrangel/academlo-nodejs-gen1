@@ -7,7 +7,7 @@ const db = new Sequelize({
 	password: 'password',
 	database: 'todos',
 	port: 5432,
-	logging: false
+	logging: false,
 });
 
 module.exports = { db };

@@ -1,65 +1,87 @@
-// Dummy data - TEST ONLY
-const todos = [
-  { id: 1, content: 'Learn NodeJS' }, { id: 2, content: 'Learn React' }, { id: 3, content: 'Learn MySQL' }
-];
+// Models
+const { Todo } = require('../models/todo.model');
 
-exports.getAllTodos = (req, res, next) => {
-  // Get data from db
+exports.getAllTodos = async (req, res, next) => {
+	try {
+		// Get data from db
 
-  res.status(200).json({ status: 'success', data: { todos } })
-}
+		// SELECT * FROM todos
+		const todos = await Todo.findAll();
 
-exports.getTodoById = (req, res, next) => {
-  const { id } = req.params;
+		res.status(200).json({
+			status: 'success',
+			data: { todos },
+		});
+	} catch (error) {
+		console.log(error);
+	}
+};
 
-  // Finds todo given an id
-  const todo = todos.find(todo => todo.id === +id)
+exports.getTodoById = async (req, res, next) => {
+	const { id } = req.params;
 
-  res.status(200).json({ status: 'success', data: { todo } })
-}
+	try {
+		// SELECT * FROM todos WHERE id = id
+		const todo = await Todo.findOne({ where: { id } });
 
-exports.createTodo = (req, res, next) => {
-  // Get todo content from req.body
-  const { content } = req.body
+		res.status(200).json({
+			status: 'success',
+			data: { todo },
+		});
+	} catch (error) {
+		console.log(error);
+	}
+};
 
-  const latestId = todos[todos.length - 1].id
+exports.createTodo = async (req, res, next) => {
+	// Get todo content from req.body
+	const { content } = req.body;
 
-  // Create new todo with id and content
-  const newTodo = {
-    id: latestId + 1,
-    content
-  }
+	try {
+		// INSERT INTO todos (content) VALUES ('Hello')
+		const newTodo = await Todo.create({ content });
 
-  // Push new todo to array
-  todos.push(newTodo)
+		// Send newTodo to the client
+		res.status(201).json({
+			status: 'success',
+			data: { newTodo },
+		});
+	} catch (error) {
+		console.log(error);
+	}
+};
 
-  // Send newTodo to the client
+exports.updateTodo = async (req, res, next) => {
+	const { id } = req.params;
+	const { content } = req.body;
 
-  res.status(201).json({ status: 'success', data: { newTodo } })
-}
+	try {
+		// Find ToDo with the given ID
+		// Set new value of content
 
-exports.updateTodo = (req, res, next) => {
-  const { id } = req.params
-  const { content } = req.body
+		// UPDATE todos SET content = 'fadsda' WHERE id = id
+		await Todo.update({ content }, { where: { id } });
 
-  // Find the todo with a given id
-  const todo = todos.find(todo => todo.id === +id)
+		// Return a response to the user
+		res.status(204).json({
+			status: 'success',
+		});
+	} catch (error) {
+		console.log(error);
+	}
+};
 
-  // Update content of todo with the new one
-  todo.content = content
+exports.deleteTodo = async (req, res, next) => {
+	const { id } = req.params;
 
-  // Return a response to the user
-  res.status(200).json({
-    status: 'success', data: { updatedTodo: todo }
-  })
-}
-
-exports.deleteTodo = (req, res, next) => {
-  const { id } = req.params
-
-  const todoIndex = todos.findIndex(todo => todo.id === +id)
-
-  todos.splice(todoIndex, 1)
-
-  res.status(200).json({ status: 'success', data: { result } })
-}
+	try {
+    // DELETE FROM todos WHERE id = id
+    await Todo.destroy({ where: { id } })
+    
+		res.status(204).json({
+			status: 'success',
+		});
+	} catch (error) {
+		console.log(error);
+	}
+};
