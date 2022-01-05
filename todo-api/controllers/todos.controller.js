@@ -1,87 +1,92 @@
 // Models
 const { Todo } = require('../models/todo.model');
 
-exports.getAllTodos = async (req, res, next) => {
-	try {
-		// Get data from db
+// Utils
+const { catchAsync } = require('../utils/catchAsync');
+const { AppError } = require('../utils/appError');
 
-		// SELECT * FROM todos
-		const todos = await Todo.findAll();
+exports.getAllTodos = catchAsync(async (req, res, next) => {
+	// Get data from db
+	// SELECT * FROM todos
+	const todos = await Todo.findAll();
 
-		res.status(200).json({
-			status: 'success',
-			data: { todos },
-		});
-	} catch (error) {
-		console.log(error);
-	}
-};
+	res.status(200).json({
+		status: 'success',
+		data: { todos },
+	});
+});
 
-exports.getTodoById = async (req, res, next) => {
+exports.getTodoById = catchAsync(async (req, res, next) => {
 	const { id } = req.params;
 
-	try {
-		// SELECT * FROM todos WHERE id = id
-		const todo = await Todo.findOne({ where: { id } });
+	// SELECT * FROM todos WHERE id = id
+	const todo = await Todo.findOne({ where: { id } });
 
-		res.status(200).json({
-			status: 'success',
-			data: { todo },
-		});
-	} catch (error) {
-		console.log(error);
+	if (!todo) {
+		return next(new AppError(`ToDo doesn't exist`, 404));
 	}
-};
 
-exports.createTodo = async (req, res, next) => {
+	res.status(200).json({
+		status: 'success',
+		data: { todo },
+	});
+});
+
+exports.createTodo = catchAsync(async (req, res, next) => {
 	// Get todo content from req.body
 	const { content } = req.body;
 
-	try {
-		// INSERT INTO todos (content) VALUES ('Hello')
-		const newTodo = await Todo.create({ content });
+	// INSERT INTO todos (content) VALUES ('Hello')
+	const newTodo = await Todo.create({ content });
 
-		// Send newTodo to the client
-		res.status(201).json({
-			status: 'success',
-			data: { newTodo },
-		});
-	} catch (error) {
-		console.log(error);
-	}
-};
+	// Send newTodo to the client
+	res.status(201).json({
+		status: 'success',
+		data: { newTodo },
+	});
+});
 
-exports.updateTodo = async (req, res, next) => {
+exports.updateTodo = catchAsync(async (req, res, next) => {
 	const { id } = req.params;
 	const { content } = req.body;
 
-	try {
-		// Find ToDo with the given ID
-		// Set new value of content
+	// Find ToDo with the given ID
+	// SELECT * FROM todos WHERE id = id
+	const todoExists = await Todo.findOne({ where: { id } });
 
-		// UPDATE todos SET content = 'fadsda' WHERE id = id
-		await Todo.update({ content }, { where: { id } });
-
-		// Return a response to the user
-		res.status(204).json({
-			status: 'success',
-		});
-	} catch (error) {
-		console.log(error);
+	if (!todoExists) {
+		// Return error message
+		return next(new AppError('To Do does not exists', 404));
 	}
-};
 
-exports.deleteTodo = async (req, res, next) => {
+	// Set new value of content
+
+	// UPDATE todos SET content = 'fadsda' WHERE id = id
+
+	// await Todo.update({ content }, { where: { id } });
+	await todoExists.update({ content });
+
+	// Return a response to the user
+	res.status(204).json({
+		status: 'success',
+	});
+});
+
+exports.deleteTodo = catchAsync(async (req, res, next) => {
 	const { id } = req.params;
 
-	try {
-    // DELETE FROM todos WHERE id = id
-    await Todo.destroy({ where: { id } })
-    
-		res.status(204).json({
-			status: 'success',
-		});
-	} catch (error) {
-		console.log(error);
+	const todoExists = await Todo.findOne({ where: { id } });
+
+	if (!todoExists) {
+		return next(
+			new AppError(`Can't delete ToDo because it doesn't exists`, 404)
+		);
 	}
-};
+
+	// await Todo.destroy({ where: { id } });
+	await todoExists.destroy();
+
+	res.status(204).json({
+		status: 'success',
+	});
+});

@@ -1,18 +1,19 @@
-const express = require('express')
+const express = require('express');
 
 // Controllers
-const { getAllTodos, getTodoById, createTodo, updateTodo, deleteTodo } = require('../controllers/todos.controller')
+const {
+	getAllTodos,
+	getTodoById,
+	createTodo,
+	updateTodo,
+	deleteTodo,
+} = require('../controllers/todos.controller');
 
-const router = express.Router()
+const router = express.Router();
 
-router.route('/')
-  .get(getAllTodos)
-  .post(createTodo)
+router.route('/').get(getAllTodos).post(createTodo);
 
-router.route('/:id')
-  .get(getTodoById)
-  .patch(updateTodo)
-  .delete(deleteTodo)
+router.route('/:id').get(getTodoById).patch(updateTodo).delete(deleteTodo);
 
 // Fetch all todos
 // router.get('/', getAllTodos);
@@ -26,5 +27,4 @@ router.route('/:id')
 // Delete todo (delete)
 // router.delete('/:id', deleteTodo)
 
-module.exports = { todosRouter: router }
-
+module.exports = { todosRouter: router };
