@@ -1,4 +1,5 @@
 const express = require('express');
+const cors = require('cors');
 
 // Routers
 const { todosRouter } = require('./routes/todos.router');
@@ -11,6 +12,8 @@ const app = express();
 
 app.use(express.urlencoded());
 app.use(express.json());
+
+app.use('*', cors());
 
 // Endpoints
 app.use('/api/v1/todos', todosRouter);
