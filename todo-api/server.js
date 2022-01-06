@@ -1,8 +1,12 @@
+const dotenv = require('dotenv');
+
 // Utils
 const { db } = require('./utils/database');
 
 // Express app
 const { app } = require('./app');
+
+dotenv.config({ path: './config.env' });
 
 db.sync()
 	.then(() => {
@@ -12,7 +16,9 @@ db.sync()
 	.catch(err => console.log(err));
 
 const startServer = () => {
-	app.listen(4000, () => {
-		console.log('To Do API running!');
+	const PORT = process.env.PORT || 4000;
+
+	app.listen(PORT, () => {
+		console.log(`To Do API running on port ${PORT}!`);
 	});
 };
