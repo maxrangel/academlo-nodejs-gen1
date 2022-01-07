@@ -1,34 +1,35 @@
 const { DataTypes } = require('sequelize');
 const { db } = require('../utils/database');
 
-// Define TODO model
-const Todo = db.define(
-	'todos',
+const User = db.define(
+	'users',
 	{
-		// Define attributes
 		id: {
-			// Define datatypes
-			primaryKey: true,
-			autoIncrement: true,
 			type: DataTypes.INTEGER,
-			allowNull: false, // NOT NULL
+			primaryKey: true,
+			allowNull: false,
+			autoIncrement: true,
 		},
-		content: {
-			type: DataTypes.STRING(255),
+		name: {
+			type: DataTypes.STRING(100),
 			allowNull: false,
 		},
-		userId: {
-			type: DataTypes.INTEGER,
+		email: {
+			type: DataTypes.STRING(255),
+			allowNull: false,
+			unique: true,
+		},
+		password: {
+			type: DataTypes.STRING(255),
 			allowNull: false,
 		},
 		status: {
 			type: DataTypes.STRING(15),
 			allowNull: false,
-			defaultValue: 'pending'
+			defaultValue: 'available',
 		},
 	},
 	{ timestamps: false }
 );
 
-// Export model
-module.exports = { Todo };
+module.exports = { User };

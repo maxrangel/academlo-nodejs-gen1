@@ -2,11 +2,15 @@ const dotenv = require('dotenv');
 
 // Utils
 const { db } = require('./utils/database');
+const { initModels } = require('./utils/initModels');
 
 // Express app
 const { app } = require('./app');
 
 dotenv.config({ path: './config.env' });
+
+// Model relations
+initModels()
 
 db.sync()
 	.then(() => {

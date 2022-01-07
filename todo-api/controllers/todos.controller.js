@@ -1,5 +1,6 @@
 // Models
 const { Todo } = require('../models/todo.model');
+const { User } = require('../models/user.model');
 
 // Utils
 const { catchAsync } = require('../utils/catchAsync');
@@ -8,7 +9,18 @@ const { AppError } = require('../utils/appError');
 exports.getAllTodos = catchAsync(async (req, res, next) => {
 	// Get data from db
 	// SELECT * FROM todos
-	const todos = await Todo.findAll();
+	// JOIN users ON users.id = todos.userId
+	// WHERE status = 'pending'
+	const todos = await Todo.findAll({
+		where: { status: 'pending' },
+		include: [
+			{
+				model: User,
+				// attributes: { include: ['id', 'name', 'email'] },
+				attributes: { exclude: ['password'] },
+			},
+		],
+	});
 
 	res.status(200).json({
 		status: 'success',
@@ -34,10 +46,10 @@ exports.getTodoById = catchAsync(async (req, res, next) => {
 
 exports.createTodo = catchAsync(async (req, res, next) => {
 	// Get todo content from req.body
-	const { content } = req.body;
+	const { content, userId } = req.body;
 
-	// INSERT INTO todos (content) VALUES ('Hello')
-	const newTodo = await Todo.create({ content });
+	// INSERT INTO todos (content, userId) VALUES ('Hello', 1)
+	const newTodo = await Todo.create({ content, userId });
 
 	// Send newTodo to the client
 	res.status(201).json({
@@ -85,6 +97,7 @@ exports.deleteTodo = catchAsync(async (req, res, next) => {
 
 	// await Todo.destroy({ where: { id } });
 	await todoExists.destroy();
+	// await todoExists.update({ status: 'deleted' });
 
 	res.status(204).json({
 		status: 'success',
