@@ -15,7 +15,6 @@ const Todo = db.define(
 		},
 		content: {
 			type: DataTypes.STRING(255),
-			allowNull: false,
 		},
 		userId: {
 			type: DataTypes.INTEGER,
@@ -24,7 +23,7 @@ const Todo = db.define(
 		status: {
 			type: DataTypes.STRING(15),
 			allowNull: false,
-			defaultValue: 'pending'
+			defaultValue: 'pending',
 		},
 	},
 	{ timestamps: false }
