@@ -37,7 +37,7 @@ exports.createTodo = catchAsync(async (req, res, next) => {
 	const { content } = req.body;
 
 	// INSERT INTO todos (content) VALUES ('Hello')
-	const newTodo = await Todo.create({ content });
+	const newTodo = await Todo.create({ content, userId: 1 });
 
 	// Send newTodo to the client
 	res.status(201).json({

@@ -15,7 +15,7 @@ app.use(express.json());
 
 app.use('*', cors());
 
-// Endpoints
+// Endpoints http://localhost:4000
 app.use('/api/v1/todos', todosRouter);
 
 app.use(globalErrorHandler);
