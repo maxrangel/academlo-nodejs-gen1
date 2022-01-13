@@ -1,5 +1,4 @@
 const express = require('express');
-const { body } = require('express-validator');
 
 // Controllers
 const {
@@ -7,7 +6,16 @@ const {
 	getUserById,
 	updateUser,
 	disableUserAccount,
+	loginUser,
 } = require('../controllers/users.controller');
+
+// Middlewares
+const {
+	createUserValidations,
+	updateUserValidations,
+	loginUserValidations,
+	validateResult,
+} = require('../middlewares/validators.middleware');
 
 const router = express.Router();
 
@@ -19,25 +27,12 @@ const router = express.Router();
 router
 	.route('/:id')
 	.get(getUserById)
-	.patch(updateUser)
+	.patch(updateUserValidations, validateResult, updateUser)
 	.delete(disableUserAccount);
 
 // Post - Create new user
-router.post(
-	'/',
-	[
-		body('name').isString().notEmpty().withMessage('Enter a valid name'),
-		body('email').isEmail().notEmpty().withMessage('Enter a valid email'),
-		body('password')
-			.isString()
-			.notEmpty()
-			.withMessage(`Password can't be empty`)
-			.isAlphanumeric()
-			.withMessage(`Password must include letters and numbers`)
-			.isLength(8)
-			.withMessage('Password must be 8 characters long'),
-	],
-	createUser
-);
+router.post('/', createUserValidations, validateResult, createUser);
+
+router.post('/login', loginUserValidations, validateResult, loginUser);
 
 module.exports = { userRouter: router };

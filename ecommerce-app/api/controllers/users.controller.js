@@ -1,5 +1,6 @@
 const bcrypt = require('bcryptjs');
-const { validationResult } = require('express-validator');
+const jwt = require('jsonwebtoken');
+const dotenv = require('dotenv');
 
 // Models
 const { User } = require('../models/user.model');
@@ -7,6 +8,30 @@ const { User } = require('../models/user.model');
 // Utils
 const { AppError } = require('../utils/appError');
 const { catchAsync } = require('../utils/catchAsync');
+
+dotenv.config({ path: './config.env' });
+
+exports.loginUser = catchAsync(async (req, res, next) => {
+	const { email, password } = req.body;
+
+	// If user exists with given email
+	const user = await User.findOne({ where: { email } });
+
+	if (!user || !(await bcrypt.compare(password, user.password))) {
+		return next(new AppError('Credentials are not valid', 404));
+	}
+
+	// Generate JWT
+	const token = await jwt.sign({ id: user.id }, process.env.JWT_SECRET, {
+		expiresIn: process.env.JWT_EXPIRES_IN,
+	});
+
+	res.session.jwt = token;
+
+	res.status(200).json({
+		status: 'success',
+	});
+});
 
 exports.getUserById = catchAsync(async (req, res, next) => {
 	const { id } = req.params;
@@ -31,17 +56,6 @@ exports.getUserById = catchAsync(async (req, res, next) => {
 exports.createUser = catchAsync(async (req, res, next) => {
 	const { name, email, password, role } = req.body;
 
-	const errors = validationResult(req);
-
-	if (!errors.isEmpty()) {
-		const message = errors
-			.array()
-			.map(({ msg }) => msg)
-			.join('. ');
-
-		return next(new AppError(message, 400));
-	}
-
 	const salt = await bcrypt.genSalt(12);
 	const hashedPassword = await bcrypt.hash(password, salt);
 
@@ -64,10 +78,6 @@ exports.createUser = catchAsync(async (req, res, next) => {
 exports.updateUser = catchAsync(async (req, res, next) => {
 	const { id } = req.params;
 	const { name, email } = req.body;
-
-	if (!name || !email) {
-		return next(new AppError('Must provide name and email', 400));
-	}
 
 	const user = await User.findOne({ where: { id } });
 
