@@ -4,7 +4,7 @@ const cookieParser = require('cookie-parser');
 
 // Routers
 const { userRouter } = require('./routes/users.routes');
-
+const { productsRouter } = require('./routes/products.routes');
 // Controllers
 const { globalErrorHandler } = require('./controllers/error.controller');
 
@@ -19,10 +19,11 @@ app.use(express.json());
 
 app.use('*', cors());
 
-app.use(cookieParser())
+app.use(cookieParser());
 
 // Endpoints
 app.use('/api/v1/users', userRouter);
+app.use('/api/v1/products', productsRouter);
 
 app.use('*', (req, res, next) => {
 	next(new AppError(`Can't find ${req.originalUrl} on this server`, 404));

@@ -21,6 +21,14 @@ const handleDuplicateValues = err => {
 	return new AppError('Email is already taken', 400);
 };
 
+const handleJWTInvalidSignature = () => {
+	return new AppError('Please try login again!', 401);
+};
+
+const handleJWTExpiration = () => {
+	return new AppError('Session expired, try log in again', 403);
+};
+
 const globalErrorHandler = (err, req, res, next) => {
 	err.statusCode = err.statusCode || 500;
 	err.status = err.status || 'error';
@@ -32,10 +40,12 @@ const globalErrorHandler = (err, req, res, next) => {
 		let error = { ...err };
 
 		// Catch known errors
-		if (err.name === 'SequelizeUniqueConstraintError') {
+		if (err.name === 'SequelizeUniqueConstraintError')
 			error = handleDuplicateValues();
-		}
-
+		if (err.error.name === 'JsonWebTokenError')
+			error = handleJWTInvalidSignature();
+		if (err.error.name === 'TokenExpiredError') error = handleJWTExpiration();
+		
 		sendErrorProd(error, req, res, next);
 	}
 };
