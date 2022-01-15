@@ -15,7 +15,7 @@ exports.loginUser = catchAsync(async (req, res, next) => {
 	const { email, password } = req.body;
 
 	// If user exists with given email
-	const user = await User.findOne({ where: { email } });
+	const user = await User.findOne({ where: { email, status: 'available' } });
 
 	if (!user || !(await bcrypt.compare(password, user.password))) {
 		return next(new AppError('Credentials are not valid', 404));

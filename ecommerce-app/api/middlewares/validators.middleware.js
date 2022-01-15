@@ -21,20 +21,19 @@ exports.updateUserValidations = [
 
 exports.loginUserValidations = [
 	body('email').isEmail().notEmpty().withMessage('Credentials are not valid'),
-	body('password').notEmpty().withMessage('Credentials are not valid')
-]
+	body('password').notEmpty().withMessage('Credentials are not valid'),
+];
 
 //End: User routes validations
-
 
 exports.validateResult = (req, res, next) => {
 	const errors = validationResult(req);
 
 	if (!errors.isEmpty()) {
 		const message = errors
-			.array()
-			.map(({ msg }) => msg)
-			.join('. ');
+			.array() // [ { msg, ... }, { msg, ... }, { msg, ... } ]
+			.map(({ msg }) => msg) // [msg, msg, msg]
+			.join('. '); // 'msg. msg. msg'
 
 		return next(new AppError(message, 400));
 	}
