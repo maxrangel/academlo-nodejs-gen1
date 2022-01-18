@@ -45,4 +45,10 @@ const Product = db.define(
 	{ timestamps: false }
 );
 
+Product.addHook('afterUpdate', async (product, options) => {
+	if (product.status === 'soldOut' && +product.quantity > 0) {
+		await product.update({ status: 'active' });
+	}
+});
+
 module.exports = { Product };

@@ -10,7 +10,7 @@ const { AppError } = require('../utils/appError');
 
 dotenv.config({ path: './config.env' });
 
-exports.checkJWT = catchAsync(async (req, res, next) => {
+exports.protectSession = catchAsync(async (req, res, next) => {
 	let token;
 
 	if (
@@ -39,5 +39,14 @@ exports.checkJWT = catchAsync(async (req, res, next) => {
 	// Add data to req object
 	req.currentUser = user;
 
+	next();
+});
+
+exports.protectProductOwner = catchAsync(async (req, res, next) => {
+	const { id } = req.params;
+	req.currentUser
+
+	// Find product by id
+	// Validate currentUser id with the given product
 	next();
 });

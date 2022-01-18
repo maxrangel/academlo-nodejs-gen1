@@ -1,19 +1,32 @@
 const express = require('express');
 
 // Controller
-const { createProduct } = require('../controllers/products.controller');
+const {
+	createProduct,
+	getAllProducts,
+	getProductDetails,
+	updateProduct,
+	disableProduct,
+} = require('../controllers/products.controller');
 
 // Middlewares
-const { checkJWT } = require('../middlewares/auth.middleware');
+const { protectSession } = require('../middlewares/auth.middleware');
 
 const router = express.Router();
 
+router.use(protectSession);
+
 // Get all products
 // Create new product
-router.route('/').get().post(checkJWT, createProduct);
+router.route('/').get(getAllProducts).post(createProduct);
 
 // Get product's details
 // Update product
 // Remove product
+router
+	.route('/:id')
+	.get(getProductDetails)
+	.patch(updateProduct)
+	.delete(disableProduct);
 
 module.exports = { productsRouter: router };
