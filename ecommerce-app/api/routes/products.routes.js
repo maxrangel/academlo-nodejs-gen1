@@ -10,7 +10,10 @@ const {
 } = require('../controllers/products.controller');
 
 // Middlewares
-const { protectSession } = require('../middlewares/auth.middleware');
+const {
+	protectSession,
+	protectProductOwner,
+} = require('../middlewares/auth.middleware');
 
 const router = express.Router();
 
@@ -26,7 +29,7 @@ router.route('/').get(getAllProducts).post(createProduct);
 router
 	.route('/:id')
 	.get(getProductDetails)
-	.patch(updateProduct)
-	.delete(disableProduct);
+	.patch(protectProductOwner, updateProduct)
+	.delete(protectProductOwner, disableProduct);
 
 module.exports = { productsRouter: router };

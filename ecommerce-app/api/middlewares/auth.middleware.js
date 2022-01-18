@@ -1,8 +1,10 @@
 const jwt = require('jsonwebtoken');
 const dotenv = require('dotenv');
+const { Op } = require('sequelize');
 
 // Models
 const { User } = require('../models/user.model');
+const { Product } = require('../models/product.model');
 
 // Utils
 const { catchAsync } = require('../utils/catchAsync');
@@ -44,9 +46,21 @@ exports.protectSession = catchAsync(async (req, res, next) => {
 
 exports.protectProductOwner = catchAsync(async (req, res, next) => {
 	const { id } = req.params;
-	req.currentUser
+	const { currentUser } = req;
 
 	// Find product by id
+	const product = await Product.findOne({
+		where: { id, status: { [Op.or]: ['active', 'soldOut'] } },
+	});
+
+	if (!product) {
+		return next(new AppError('No product found', 404));
+	}
+
 	// Validate currentUser id with the given product
+	if (product.userId !== currentUser.id) {
+		return next(new AppError('You do not own this product', 401));
+	}
+
 	next();
 });
