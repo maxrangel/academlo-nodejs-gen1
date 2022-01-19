@@ -49,6 +49,7 @@ exports.protectProductOwner = catchAsync(async (req, res, next) => {
 	const { currentUser } = req;
 
 	// Find product by id
+	// SELECT * FROM products WHERE status = 'active' OR status = 'soldOut'
 	const product = await Product.findOne({
 		where: { id, status: { [Op.or]: ['active', 'soldOut'] } },
 	});
@@ -62,5 +63,6 @@ exports.protectProductOwner = catchAsync(async (req, res, next) => {
 		return next(new AppError('You do not own this product', 401));
 	}
 
+	req.product = product;
 	next();
 });

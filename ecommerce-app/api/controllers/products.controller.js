@@ -8,6 +8,16 @@ const { User } = require('../models/user.model');
 const { AppError } = require('../utils/appError');
 const { catchAsync } = require('../utils/catchAsync');
 
+const filterObj = (reqBody, ...allowedFields) => {
+	const newObj = {};
+
+	Object.keys(reqBody).forEach(el => {
+		if (allowedFields.includes(el)) newObj[el] = reqBody[el];
+	});
+
+	return newObj;
+};
+
 exports.getAllProducts = catchAsync(async (req, res, next) => {
 	const products = await Product.findAll({
 		where: { status: 'active' },
@@ -55,41 +65,41 @@ exports.createProduct = catchAsync(async (req, res, next) => {
 });
 
 exports.updateProduct = catchAsync(async (req, res, next) => {
-	const { id } = req.params;
-	const { name, description, price, quantity, category } = req.body;
+	const { product } = req;
 
-	// SELECT * FROM products WHERE status = 'active' OR status = 'soldOut'
-	const product = await Product.findOne({
-		where: { id, status: { [Op.or]: ['active', 'soldOut'] } },
-	});
+	const filteredObj = filterObj(
+		req.body,
+		'name',
+		'description',
+		'price',
+		'quantity',
+		'category'
+	);
 
-	if (!product) {
-		return next(new AppError('No product found', 404));
+	if (filteredObj.quantity && filteredObj.quantity < 0) {
+		return next(new AppError('Invalid product quantity', 400));
 	}
 
 	await product.update({
-		name,
-		description,
-		price,
-		quantity: product.quantity + quantity,
-		category,
+		...filteredObj,
 	});
 
 	res.status(204).json({ status: 'success' });
 });
 
 exports.disableProduct = catchAsync(async (req, res, next) => {
-	const { id } = req.params;
-
-	const product = await Product.findOne({
-		where: { id, status: { [Op.or]: ['active', 'soldOut'] } },
-	});
-
-	if (!product) {
-		return next(new AppError('No product found', 404));
-	}
+	const { product } = req;
 
 	await product.update({ status: 'deleted' });
 
 	res.status(204).json({ status: 'success' });
+});
+
+exports.getUserProducts = catchAsync(async (req, res, next) => {
+	// Based on req.currentUser, get the user's products based on its id
+	
+	res.status(200).json({
+		status: 'success',
+		data: { products: [] },
+	});
 });

@@ -24,7 +24,32 @@ exports.loginUserValidations = [
 	body('password').notEmpty().withMessage('Credentials are not valid'),
 ];
 
-//End: User routes validations
+// End: User routes validations
+
+// Product routes validations
+exports.createProductValidations = [
+	// Name can't be empty
+	body('name').isString().notEmpty().withMessage('Enter a valid name'),
+	// Description can't be empty
+	body('description')
+		.isString()
+		.notEmpty()
+		.withMessage('Enter a valid description'),
+	// Price must be a decimal
+	body('price')
+		.isDecimal()
+		.custom(value => value < 0)
+		.withMessage('Enter a valid price'),
+	// Quantity must be a number
+	body('quantity')
+		.isNumeric()
+		.custom(value => value < 0)
+		.withMessage('Enter a valid quantity'),
+	// Category can't be empty
+	body('category').isString().notEmpty().withMessage('Enter a valid category'),
+];
+
+// End: Product routes validations
 
 exports.validateResult = (req, res, next) => {
 	const errors = validationResult(req);

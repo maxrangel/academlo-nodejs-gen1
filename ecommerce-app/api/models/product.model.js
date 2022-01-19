@@ -49,6 +49,10 @@ Product.addHook('afterUpdate', async (product, options) => {
 	if (product.status === 'soldOut' && +product.quantity > 0) {
 		await product.update({ status: 'active' });
 	}
+
+	if (product.quantity === 0) {
+		await product.update({ status: 'soldOut' });
+	}
 });
 
 module.exports = { Product };
