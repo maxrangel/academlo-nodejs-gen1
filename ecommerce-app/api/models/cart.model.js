@@ -14,24 +14,15 @@ const Cart = db.define(
 			type: DataTypes.INTEGER,
 			allowNull: false,
 		},
-		productId: {
-			type: DataTypes.INTEGER,
-			allowNull: false,
-		},
-		price: {
+		totalPrice: {
 			type: DataTypes.DECIMAL(10, 2),
 			allowNull: false,
-		},
-		quantity: {
-			type: DataTypes.INTEGER,
-			allowNull: false,
-			defaultValue: 0,
 		},
 		status: {
 			type: DataTypes.STRING(20),
 			allowNull: 'false',
-			// active | deleted | cancelled | purchased
-			defaultValue: 'active',
+			// onGoing | deleted | cancelled | purchased
+			defaultValue: 'onGoing',
 		},
 	},
 	{ timestamps: false }

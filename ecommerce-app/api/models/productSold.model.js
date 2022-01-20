@@ -1,31 +1,34 @@
 const { DataTypes } = require('sequelize');
+
+// Utils
 const { db } = require('../utils/database');
 
-const Sale = db.define(
-	'sales',
+const ProductSold = db.define(
+	'productsSold',
 	{
 		id: {
-			primaryKey: true,
+			type: DataTypes.INTEGER,
 			autoIncrement: true,
-			allowNull: false,
-			type: DataTypes.INTEGER,
-		},
-		userId: {
-			type: DataTypes.INTEGER,
+			primaryKey: true,
 			allowNull: false,
 		},
-		totalPrice: {
+		saleId: {
+			type: DataTypes.INTEGER,
+			allowNull: false,
+		},
+		productId: { type: DataTypes.INTEGER, allowNull: false },
+		quantity: { type: DataTypes.INTEGER, allowNull: false },
+		price: {
 			type: DataTypes.DECIMAL(10, 2),
 			allowNull: false,
 		},
 		status: {
 			type: DataTypes.STRING(20),
-			allowNull: 'false',
-			// available | deleted
-			defaultValue: 'available',
+			allowNull: false,
+			defaultValue: 'active',
 		},
 	},
 	{ timestamps: false }
 );
 
-module.exports = { Sale };
+module.exports = { ProductSold };

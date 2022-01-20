@@ -7,16 +7,7 @@ const { User } = require('../models/user.model');
 // Utils
 const { AppError } = require('../utils/appError');
 const { catchAsync } = require('../utils/catchAsync');
-
-const filterObj = (reqBody, ...allowedFields) => {
-	const newObj = {};
-
-	Object.keys(reqBody).forEach(el => {
-		if (allowedFields.includes(el)) newObj[el] = reqBody[el];
-	});
-
-	return newObj;
-};
+const { filterObj } = require('../utils/filterObj');
 
 exports.getAllProducts = catchAsync(async (req, res, next) => {
 	const products = await Product.findAll({
@@ -97,9 +88,12 @@ exports.disableProduct = catchAsync(async (req, res, next) => {
 
 exports.getUserProducts = catchAsync(async (req, res, next) => {
 	// Based on req.currentUser, get the user's products based on its id
-	
+	const { currentUser } = req;
+
+	const products = await Product.findAll({ where: { userId: currentUser.id } });
+
 	res.status(200).json({
 		status: 'success',
-		data: { products: [] },
+		data: { products },
 	});
 });

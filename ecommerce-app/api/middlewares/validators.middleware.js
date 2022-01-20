@@ -38,12 +38,12 @@ exports.createProductValidations = [
 	// Price must be a decimal
 	body('price')
 		.isDecimal()
-		.custom(value => value < 0)
+		.custom(value => value > 0)
 		.withMessage('Enter a valid price'),
 	// Quantity must be a number
 	body('quantity')
 		.isNumeric()
-		.custom(value => value < 0)
+		.custom(value => +value > 0)
 		.withMessage('Enter a valid quantity'),
 	// Category can't be empty
 	body('category').isString().notEmpty().withMessage('Enter a valid category'),

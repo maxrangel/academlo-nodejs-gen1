@@ -31,6 +31,8 @@ router
 	.get(getAllProducts)
 	.post(createProductValidations, validateResult, createProduct);
 
+router.get('/user-products', getUserProducts);
+
 // Get product's details
 // Update product
 // Remove product
@@ -39,7 +41,5 @@ router
 	.get(getProductDetails)
 	.patch(protectProductOwner, updateProduct)
 	.delete(protectProductOwner, disableProduct);
-
-router.get('/user-products', getUserProducts);
 
 module.exports = { productsRouter: router };

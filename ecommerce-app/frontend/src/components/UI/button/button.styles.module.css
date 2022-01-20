@@ -1,0 +1,15 @@
+.button {
+	width: 100%;
+	height: 40px;
+	font-size: 18px;
+	text-transform: uppercase;
+	border: 3px solid black;
+	background-color: transparent;
+	font-weight: bold;
+	color: black;
+}
+
+.button:hover {
+	cursor: pointer;
+	background-color: #ccc;
+}
