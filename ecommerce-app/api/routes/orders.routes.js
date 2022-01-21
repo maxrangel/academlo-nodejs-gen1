@@ -4,9 +4,14 @@ const express = require('express');
 const {
 	addProductToCart,
 	getUserCart,
+	updateProductCart,
 } = require('../controllers/orders.controller');
 
 // Middlewares
+const {
+	updateProductCartValidations,
+	validateResult,
+} = require('../middlewares/validators.middleware');
 const { protectSession } = require('../middlewares/auth.middleware');
 
 const router = express.Router();
@@ -20,6 +25,12 @@ router.get('/get-cart', getUserCart);
 router.post('/add-product-to-cart', addProductToCart);
 
 // Update cart product quantity
+router.patch(
+	'/update-cart-product',
+	updateProductCartValidations,
+	validateResult,
+	updateProductCart
+);
 
 // Remove product from cart
 

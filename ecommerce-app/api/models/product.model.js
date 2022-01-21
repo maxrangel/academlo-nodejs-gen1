@@ -38,7 +38,7 @@ const Product = db.define(
 		status: {
 			type: DataTypes.STRING(20),
 			allowNull: 'false',
-			// active | deleted | unavailable
+			// active | deleted | soldOut
 			defaultValue: 'active',
 		},
 	},

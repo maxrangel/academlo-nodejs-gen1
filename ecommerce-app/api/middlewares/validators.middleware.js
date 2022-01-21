@@ -51,6 +51,16 @@ exports.createProductValidations = [
 
 // End: Product routes validations
 
+// Order routes validations
+exports.updateProductCartValidations = [
+	body('newQuantity')
+		.isNumeric()
+		.custom(value => value >= 0)
+		.withMessage('Enter a valid quantity'),
+];
+
+// End: Order routes validations
+
 exports.validateResult = (req, res, next) => {
 	const errors = validationResult(req);
 
