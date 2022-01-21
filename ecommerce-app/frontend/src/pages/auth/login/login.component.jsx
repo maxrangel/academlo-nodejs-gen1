@@ -3,6 +3,7 @@ import { useRef } from 'react';
 // Components
 import Input from '../../../components/UI/input/input.component';
 import Button from '../../../components/UI/button/button.component';
+import FormContainer from '../../../components/UI/form-container/form-container.component';
 
 import classes from './login.styles.module.css';
 
@@ -18,20 +19,21 @@ const Login = ({ onLogin, showSignupForm }) => {
 	};
 
 	return (
-		<div className={classes.login}>
+		<FormContainer>
 			<form className={classes.form} onSubmit={onSubmitHandler}>
-				<h3 className={classes.login__title}>Log In</h3>
-				<p className={classes.login__subtitle}>Enter your email and password</p>
+				<h3 className={classes.form__title}>Log In</h3>
+				<p className={classes.form__subtitle}>Enter your email and password</p>
 				<Input
 					label="Email"
-					input={{ id: 'email', type: 'email', ref: emailInputRef }}
+					ref={emailInputRef}
+					input={{ id: 'email', type: 'email' }}
 				/>
 				<Input
 					label="Password"
+					ref={passwordInputRef}
 					input={{
 						id: 'password',
 						type: 'password',
-						ref: passwordInputRef,
 					}}
 				/>
 
@@ -44,7 +46,7 @@ const Login = ({ onLogin, showSignupForm }) => {
 					/>
 				</div>
 			</form>
-		</div>
+		</FormContainer>
 	);
 };
 

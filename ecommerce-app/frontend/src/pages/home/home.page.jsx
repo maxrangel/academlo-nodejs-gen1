@@ -1,11 +1,15 @@
+import { Fragment } from 'react';
+
+// Component
+import NavHeader from '../../components/UI/nav-header/nav-header.component';
+
 import classes from './home.styles.module.css';
 
 const Home = ({ onLogout }) => {
 	return (
-		<div>
-			<h1>Home</h1>
-			<button onClick={onLogout}>Logout</button>
-		</div>
+		<Fragment>
+			<NavHeader />
+		</Fragment>
 	);
 };
 

@@ -10,6 +10,7 @@ const { app } = require('./app');
 dotenv.config({ path: './config.env' });
 
 // Model relations
+
 initModels();
 
 db.sync()

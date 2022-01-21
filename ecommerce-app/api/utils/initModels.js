@@ -11,8 +11,8 @@ const { User } = require('../models/user.model');
 
 const userRelations = () => {
 	// 1 User <--> Product M
-	User.hasMany(Product);
-	Product.belongsTo(User);
+	User.hasMany(Product, { foreignKey: 'userId' });
+	Product.belongsTo(User, { targetKey: 'id' });
 
 	// 1 User <--> Sale M
 	User.hasMany(Sale);
@@ -32,23 +32,37 @@ const productRelations = () => {
 	Product.hasMany(ProductImg);
 	ProductImg.belongsTo(Product);
 
-	// 1 ProductInOrder <--> Product M
-	ProductInOrder.hasMany(Product);
-	Product.belongsTo(ProductInOrder);
+	// 1 Product <--> ProductInOrder M
+	Product.hasOne(ProductInOrder);
+	ProductInOrder.belongsTo(ProductInOrder);
 
-	// 1 Cart <--> ProductInCart 1
-	ProductInCart.hasOne(Product, { foreignKey: 'id', sourceKey: 'productId' });
-	Product.belongsTo(ProductInCart, { targetKey: 'productId' });
+	// 1 Product <--> ProductInCart 1
+	Product.hasOne(ProductInCart);
+	ProductInCart.belongsTo(Product);
 
 	// 1 ProductSold <--> Product 1
-	ProductSold.hasOne(Product);
-	Product.belongsTo(ProductSold);
+	Product.hasOne(ProductSold);
+	ProductSold.belongsTo(Product);
+
+	// ProductInOrder.hasMany(Product, { foreignKey: 'id', sourceKey: 'productId' });
+	// Product.belongsTo(ProductInOrder, { targetKey: 'productId' });
+
+	// // 1 Cart <--> ProductInCart 1
+	// ProductInCart.hasOne(Product, { foreignKey: 'id', sourceKey: 'productId' });
+	// Product.belongsTo(ProductInCart, { targetKey: 'productId' });
+
+	// // 1 ProductSold <--> Product 1
+	// ProductSold.hasOne(Product, { foreignKey: 'id', sourceKey: 'productId' });
+	// Product.belongsTo(ProductSold, { targetKey: 'productId' });
 };
 
 const orderRelations = () => {
 	// 1 Order <--> ProductInOrder M
-	Order.hasMany(ProductInOrder);
-	ProductInOrder.belongsTo(Order);
+	Order.hasMany(ProductInOrder, {
+		foreignKey: 'orderId',
+		sourceKey: 'id',
+	});
+	ProductInOrder.belongsTo(Order, { targetKey: 'id' });
 };
 
 const cartRelations = () => {
