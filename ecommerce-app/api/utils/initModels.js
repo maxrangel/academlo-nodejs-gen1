@@ -34,7 +34,7 @@ const productRelations = () => {
 
 	// 1 Product <--> ProductInOrder M
 	Product.hasOne(ProductInOrder);
-	ProductInOrder.belongsTo(ProductInOrder);
+	ProductInOrder.belongsTo(Product);
 
 	// 1 Product <--> ProductInCart 1
 	Product.hasOne(ProductInCart);
@@ -43,17 +43,6 @@ const productRelations = () => {
 	// 1 ProductSold <--> Product 1
 	Product.hasOne(ProductSold);
 	ProductSold.belongsTo(Product);
-
-	// ProductInOrder.hasMany(Product, { foreignKey: 'id', sourceKey: 'productId' });
-	// Product.belongsTo(ProductInOrder, { targetKey: 'productId' });
-
-	// // 1 Cart <--> ProductInCart 1
-	// ProductInCart.hasOne(Product, { foreignKey: 'id', sourceKey: 'productId' });
-	// Product.belongsTo(ProductInCart, { targetKey: 'productId' });
-
-	// // 1 ProductSold <--> Product 1
-	// ProductSold.hasOne(Product, { foreignKey: 'id', sourceKey: 'productId' });
-	// Product.belongsTo(ProductSold, { targetKey: 'productId' });
 };
 
 const orderRelations = () => {

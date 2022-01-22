@@ -135,6 +135,12 @@ exports.updateProductCart = catchAsync(async (req, res, next) => {
 		);
 	}
 
+	if (newQuantity === productInCart.quantity) {
+		return next(
+			new AppError('You already have that quantity in that product', 400)
+		);
+	}
+
 	let updatedTotalPrice;
 
 	// Check if user added or removed from the selected product
