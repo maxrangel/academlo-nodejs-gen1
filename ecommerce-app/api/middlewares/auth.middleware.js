@@ -2,6 +2,8 @@ const jwt = require('jsonwebtoken');
 const dotenv = require('dotenv');
 const { Op } = require('sequelize');
 
+// require('crypto').randomBytes(64).toString('hex')
+
 // Models
 const { User } = require('../models/user.model');
 const { Product } = require('../models/product.model');
@@ -64,5 +66,16 @@ exports.protectProductOwner = catchAsync(async (req, res, next) => {
 	}
 
 	req.product = product;
+	next();
+});
+
+exports.protectUser = catchAsync(async (req, res, next) => {
+	const { currentUser } = req;
+	const { id } = req.params;
+
+	if (+currentUser.id !== +id) {
+		return next(new AppError('You do not own this account', 401));
+	}
+
 	next();
 });

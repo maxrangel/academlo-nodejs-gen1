@@ -7,22 +7,37 @@ const { ProductInCart } = require('../models/productInCart.model');
 const { catchAsync } = require('../utils/catchAsync');
 const { filterObj } = require('../utils/filterObj');
 const { AppError } = require('../utils/appError');
+const { formatUserCart } = require('../utils/queryFormat');
 
 exports.getUserCart = catchAsync(async (req, res, next) => {
 	const { currentUser } = req;
 
 	const cart = await Cart.findOne({
+		attributes: { exclude: ['userId', 'status'] },
 		where: { userId: currentUser.id, status: 'onGoing' },
 		include: [
 			{
 				model: ProductInCart,
+				attributes: { exclude: ['cartId', 'status'] },
 				where: { status: 'active' },
-				include: [{ model: Product }],
+				include: [
+					{
+						model: Product,
+						attributes: {
+							exclude: ['id', 'userId', 'price', 'quantity', 'status'],
+						},
+					},
+				],
 			},
 		],
 	});
 
-	res.status(200).json({ status: 'success', data: { cart } });
+	const formattedCart = formatUserCart(cart);
+
+	res.status(200).json({
+		status: 'success',
+		data: { cart: formattedCart },
+	});
 });
 
 exports.addProductToCart = catchAsync(async (req, res, next) => {

@@ -1,6 +1,8 @@
 const express = require('express');
 const cors = require('cors');
 const cookieParser = require('cookie-parser');
+const xss = require('xss-clean');
+const rateLimit = require('express-rate-limit');
 
 // Routers
 const { userRouter } = require('./routes/users.routes');
@@ -15,6 +17,16 @@ const { AppError } = require('./utils/appError');
 
 // Init app
 const app = express();
+
+app.use(xss());
+
+app.use(
+	rateLimit({
+		max: 1000,
+		windowMs: 60 * 60 * 1000, // 1 hour
+		message: 'Too many requests from this IP',
+	})
+);
 
 app.use(express.urlencoded());
 app.use(express.json());
