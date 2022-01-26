@@ -3,11 +3,13 @@ const cors = require('cors');
 const cookieParser = require('cookie-parser');
 const xss = require('xss-clean');
 const rateLimit = require('express-rate-limit');
+const path = require('path');
 
 // Routers
 const { userRouter } = require('./routes/users.routes');
 const { productsRouter } = require('./routes/products.routes');
 const { ordersRouter } = require('./routes/orders.routes');
+const { viewsRouter } = require('./routes/views.routes');
 
 // Controllers
 const { globalErrorHandler } = require('./controllers/error.controller');
@@ -28,6 +30,9 @@ app.use(
 	})
 );
 
+app.use(express.static(path.join(__dirname, 'views')));
+app.set('view-engine', 'pug');
+
 app.use(express.urlencoded());
 app.use(express.json());
 
@@ -39,6 +44,7 @@ app.use(cookieParser());
 app.use('/api/v1/users', userRouter);
 app.use('/api/v1/products', productsRouter);
 app.use('/api/v1/orders', ordersRouter);
+app.use('/', viewsRouter);
 
 app.use('*', (req, res, next) => {
 	next(new AppError(`Can't find ${req.originalUrl} on this server`, 404));

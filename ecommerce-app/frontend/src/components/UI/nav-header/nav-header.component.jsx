@@ -9,6 +9,9 @@ const NavHeader = () => {
 				Academlo Shop
 			</Link>
 			<div className={classes.options}>
+				<Link className={classes.option} to="/add-product">
+					Add product
+				</Link>
 				<Link className={classes.option} to="/cart">
 					View cart
 				</Link>
