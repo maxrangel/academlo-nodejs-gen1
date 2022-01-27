@@ -189,3 +189,24 @@ exports.updateProductCart = catchAsync(async (req, res, next) => {
 
 	res.status(204).json({ status: 'success' });
 });
+
+exports.purchaseOrder = catchAsync(async (req, res, next) => {
+	// Get user's cart and get the products of the cart
+	// Set Cart status to 'purchased'
+	// Create a new order
+
+	// [Promise]
+	// const promises = products.map(async () => {
+	// 	await Product.findAll()
+	// }) 
+
+	// await Promise.all(promises)
+
+	// Loop through the products array, for each product
+		// Set productInCart status to 'purchased', search for cartId and productId
+		// Look for the Product (productId), substract and update the requested qty from the product's qty
+		// Create productInOrder, pass orderId, productId, qty, price
+
+
+	res.status(200).json({ status: 'success' });
+});
