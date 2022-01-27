@@ -42,9 +42,9 @@ const globalErrorHandler = (err, req, res, next) => {
 		// Catch known errors
 		if (err.name === 'SequelizeUniqueConstraintError')
 			error = handleDuplicateValues();
-		if (err.error.name === 'JsonWebTokenError')
+		if (err.name === 'JsonWebTokenError')
 			error = handleJWTInvalidSignature();
-		if (err.error.name === 'TokenExpiredError') error = handleJWTExpiration();
+		if (err.name === 'TokenExpiredError') error = handleJWTExpiration();
 		
 		sendErrorProd(error, req, res, next);
 	}

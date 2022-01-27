@@ -82,7 +82,7 @@ exports.createUser = catchAsync(async (req, res, next) => {
 	newUser.password = undefined;
 
 	// Send welcome Email to user
-	await new Email('Max', 'max_urbina@live.com.mx').sendWelcome();
+	await new Email(newUser.email).sendWelcome(newUser.name, newUser.email);
 
 	res.status(201).json({
 		status: 'success',

@@ -25,22 +25,10 @@ html
                       table(role='presentation' cellspacing='0' cellpadding='0' border='0')
                         tbody
                           tr
+                            // CONTENT GOES HERE
                             td
-                              p Hi there,
-                              p
-                                | Sometimes you just want to send a simple HTML email with a simple design and clear call to action. This is it.
-                              table.btn.btn-primary(role='presentation' cellspacing='0' cellpadding='0' border='0')
-                                tbody
-                                  tr
-                                    td(align='left')
-                                      table(role='presentation' cellspacing='0' cellpadding='0' border='0')
-                                        tbody
-                                          tr
-                                            td
-                                              a(href='http://htmlemail.io' target='_blank') Call To Action
-                              p
-                                | This is a really simple email template. Its sole purpose is to get the recipient to click the button with no distractions.
-                              p Good luck! Hope it works.
+                              block emailContent
+                            
                   // END MAIN CONTENT AREA
                   // END CENTERED WHITE CONTAINER
                   // START FOOTER

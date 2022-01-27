@@ -3,16 +3,27 @@ const pug = require('pug');
 const path = require('path');
 const { htmlToText } = require('html-to-text');
 const dotenv = require('dotenv');
+const { basename } = require('path');
 
 dotenv.config({ path: './config.env' });
 
 class Email {
-	constructor(name, emails) {
-		this.name = name;
+	constructor(emails) {
 		this.emails = emails;
 	}
 
 	createTransport() {
+		if (process.env.NODE_ENV === 'development') {
+			return nodemailer.createTransport({
+				service: 'SendGrid',
+				auth: {
+					user: process.env.SENDGRID_NAME,
+					pass: process.env.SENDGRID_API_KEY,
+				},
+			});
+		}
+
+
 		return nodemailer.createTransport({
 			host: 'smtp.mailtrap.io',
 			port: 2525,
@@ -23,10 +34,18 @@ class Email {
 		});
 	}
 
-	async send(subject) {
+	async send(template, subject, templateOptions = {}) {
 		const transport = await this.createTransport();
 
-		const html = pug.renderFile(`${__dirname}/../views/emails/base.pug`);
+		const htmlPath = path.join(
+			__dirname,
+			'..',
+			'views',
+			'emails',
+			`${template}.pug`
+		);
+
+		const html = pug.renderFile(htmlPath, templateOptions);
 
 		const mailOptions = {
 			subject,
@@ -39,8 +58,8 @@ class Email {
 		await transport.sendMail(mailOptions);
 	}
 
-	async sendWelcome() {
-		await this.send('New account!');
+	async sendWelcome(username, email) {
+		await this.send('welcome', 'New account!', { username, email });
 	}
 }
 
