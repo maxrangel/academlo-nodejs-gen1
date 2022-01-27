@@ -7,6 +7,7 @@
 	border: 3px solid black;
 	width: 400px;
 	padding: 0 12px;
+	margin-bottom: 12px;
 }
 
 .card__header {

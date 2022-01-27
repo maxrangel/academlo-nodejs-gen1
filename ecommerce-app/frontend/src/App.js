@@ -4,6 +4,7 @@ import { Routes, Route, Navigate, useNavigate } from 'react-router-dom';
 // Pages
 import Home from './pages/home/home.page';
 import Auth from './pages/auth/auth.page';
+import AddProduct from './pages/add-product/add-product.page';
 
 import './App.css';
 
@@ -35,6 +36,8 @@ const App = () => {
 						isAuth ? <Home onLogout={logoutHandler} /> : <Navigate to="/auth" />
 					}
 				/>
+
+				<Route path="/add-product" element={<AddProduct />} />
 
 				<Route
 					path="/auth"

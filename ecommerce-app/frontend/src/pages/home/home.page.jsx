@@ -13,6 +13,10 @@ const Home = ({ onLogout }) => {
 
 			<div className={classes.products__list}>
 				<ProductCard />
+				<ProductCard />
+				<ProductCard />
+				<ProductCard />
+				<ProductCard />
 			</div>
 		</Fragment>
 	);
