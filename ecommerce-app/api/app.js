@@ -4,6 +4,7 @@ const cookieParser = require('cookie-parser');
 const xss = require('xss-clean');
 const rateLimit = require('express-rate-limit');
 const path = require('path');
+const morgan = require('morgan');
 
 // Routers
 const { userRouter } = require('./routes/users.routes');
@@ -20,6 +21,8 @@ const { AppError } = require('./utils/appError');
 // Init app
 const app = express();
 
+app.enable('trust proxy');
+
 app.use(xss());
 
 app.use(
@@ -33,10 +36,12 @@ app.use(
 app.use(express.static(path.join(__dirname, 'views')));
 app.set('view-engine', 'pug');
 
-app.use(express.urlencoded());
-app.use(express.json());
+app.use(express.urlencoded({ extended: true }));
+app.use(express.json({ limit: '10kb' }));
 
-app.use('*', cors());
+// Implement CORS
+app.use(cors()); //Access-Control-Allow-Origin *
+app.options('*', cors());
 
 app.use(cookieParser());
 
