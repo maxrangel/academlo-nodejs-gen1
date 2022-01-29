@@ -1,9 +1,12 @@
-const path = require('path');
-
 exports.renderIndex = (req, res, next) => {
-	res.status(200).render('welcome.pug', { message: 'Hello from NodeJS' });
-};
+	const users = [
+		{ name: 'Max', age: 23 },
+		{ name: 'John', age: 25 },
+		{ name: 'Chris', age: 21 },
+	];
 
-// p.subtitle #{message}
-// p.subtitle Where you can get any product
-// p.subtitle Get our best offers!
+	res.status(200).render('welcome.pug', {
+		message: 'Hello from NodeJS',
+		users,
+	});
+};

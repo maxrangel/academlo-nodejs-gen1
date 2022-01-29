@@ -191,6 +191,7 @@ exports.updateProductCart = catchAsync(async (req, res, next) => {
 });
 
 exports.purchaseOrder = catchAsync(async (req, res, next) => {
+	// 1st part:
 	// Get user's cart and get the products of the cart
 	// Set Cart status to 'purchased'
 	// Create a new order
@@ -198,15 +199,21 @@ exports.purchaseOrder = catchAsync(async (req, res, next) => {
 	// [Promise]
 	// const promises = products.map(async () => {
 	// 	await Product.findAll()
-	// }) 
+	// })
 
 	// await Promise.all(promises)
 
 	// Loop through the products array, for each product
-		// Set productInCart status to 'purchased', search for cartId and productId
-		// Look for the Product (productId), substract and update the requested qty from the product's qty
-		// Create productInOrder, pass orderId, productId, qty, price
+	// Set productInCart status to 'purchased', search for cartId and productId
+	// Look for the Product (productId), substract and update the requested qty from the product's qty
+	// Create productInOrder, pass orderId, productId, qty, price
 
+	// 2nd part:
+	// Send email to the user that purchased the order
+	// The email must contain the total price and the list of products that it purchased
 
 	res.status(200).json({ status: 'success' });
 });
+
+// Create a controller a function that gets all the user's orders
+// The response must include all products that purchased
