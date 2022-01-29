@@ -1,5 +1,8 @@
 import { Fragment } from 'react';
 
+// Redux
+import {  } from '../../store/store'
+
 // Component
 import NavHeader from '../../components/UI/nav-header/nav-header.component';
 import ProductCard from '../../components/products/product-card/product-card.component';

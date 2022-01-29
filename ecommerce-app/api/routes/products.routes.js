@@ -20,16 +20,21 @@ const {
 	validateResult,
 } = require('../middlewares/validators.middleware');
 
+const { multerUpload } = require('../utils/multer'); // multipart/form-data
+
 const router = express.Router();
 
 router.use(protectSession);
 
 // Get all products
 // Create new product
-router
-	.route('/')
-	.get(getAllProducts)
-	.post(createProductValidations, validateResult, createProduct);
+router.route('/').get(getAllProducts).post(
+	multerUpload.fields([{ name: 'productImgs', maxCount: 2 }]),
+	// multerUpload.single('productImg'),
+	createProductValidations,
+	validateResult,
+	createProduct
+);
 
 router.get('/user-products', getUserProducts);
 

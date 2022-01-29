@@ -37,7 +37,7 @@ app.use(express.static(path.join(__dirname, 'views')));
 app.set('view-engine', 'pug');
 
 app.use(express.urlencoded({ extended: true }));
-app.use(express.json({ limit: '10kb' }));
+app.use(express.json());
 
 // Implement CORS
 app.use(cors()); //Access-Control-Allow-Origin *
