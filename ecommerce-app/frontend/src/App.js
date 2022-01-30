@@ -1,5 +1,6 @@
-import { useState } from 'react';
-import { Routes, Route, Navigate, useNavigate } from 'react-router-dom';
+import { useEffect } from 'react';
+import { Routes, Route, useNavigate } from 'react-router-dom';
+import { useSelector } from 'react-redux';
 
 // Pages
 import Home from './pages/home/home.page';
@@ -10,36 +11,34 @@ import Orders from './pages/orders/orders.page';
 import Profile from './pages/profile/profile.page';
 import Sales from './pages/sales/sales.page';
 
+// Components
+import NavHeader from './components/UI/nav-header/nav-header.component';
+
 import './App.css';
 
 const App = () => {
-	const [isAuth, setIsAuth] = useState(false);
 	const navigate = useNavigate();
 
-	const loginHandler = (email, password) => {
-		setIsAuth(true);
-		navigate('/');
-	};
+	// State (Redux)
+	const isAuth = useSelector(state => state.userReducer.isAuth);
 
-	const logoutHandler = userId => {
-		setIsAuth(false);
-		// navigate('/login');
-	};
+	// Effects
+	useEffect(() => {
+		if (!isAuth) navigate('/auth');
+	}, [isAuth, navigate]);
 
+	// Handlers
 	const signupHandler = (email, password) => {
 		console.log('Signin user in!');
 	};
 
 	return (
 		<div className="app">
-			<Routes>
-				{/* {!isAuth ? <Navigate to="/auth" /> : <Navigate to="/home" />} */}
+			{isAuth && <NavHeader />}
 
-				<Route index path="/" element={<Home onLogout={logoutHandler} />} />
-				<Route
-					path="/auth"
-					element={<Auth onLogin={loginHandler} onSignup={signupHandler} />}
-				/>
+			<Routes>
+				<Route index path="/" element={<Home />} />
+				<Route path="/auth" element={<Auth onSignup={signupHandler} />} />
 				<Route path="/add-product" element={<AddProduct />} />
 				<Route path="/cart" element={<Cart />} />
 				<Route path="/orders" element={<Orders />} />

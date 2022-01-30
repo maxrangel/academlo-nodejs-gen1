@@ -1,4 +1,9 @@
 import { useRef } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
+import { useNavigate } from 'react-router-dom';
+
+// Redux
+import { userActions } from '../../../store/reducers/user.reducer';
 
 // Components
 import Input from '../../../components/UI/input/input.component';
@@ -7,7 +12,10 @@ import FormContainer from '../../../components/UI/form-container/form-container.
 
 import classes from './login.styles.module.css';
 
-const Login = ({ onLogin, showSignupForm }) => {
+const Login = ({ showSignupForm }) => {
+	const dispatch = useDispatch();
+	const navigate = useNavigate();
+
 	// Refs
 	const emailInputRef = useRef();
 	const passwordInputRef = useRef();
@@ -15,7 +23,19 @@ const Login = ({ onLogin, showSignupForm }) => {
 	const onSubmitHandler = e => {
 		e.preventDefault();
 
-		onLogin();
+		const emailValue = emailInputRef.current.value;
+		const passwordValue = passwordInputRef.current.value;
+
+		// if (
+		// 	emailValue.trim().length === 0 ||
+		// 	passwordValue.trim().length ||
+		// 	passwordValue.includes('@')
+		// ) {
+		// 	return;
+		// }
+
+		dispatch(userActions.login({ email: emailValue, password: passwordValue }));
+		navigate('/');
 	};
 
 	return (

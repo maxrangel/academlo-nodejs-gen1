@@ -1,19 +1,13 @@
-import { Fragment } from 'react';
-
-// Redux
-import {  } from '../../store/store'
+import { Fragment, useEffect } from 'react';
 
 // Component
-import NavHeader from '../../components/UI/nav-header/nav-header.component';
 import ProductCard from '../../components/products/product-card/product-card.component';
 
 import classes from './home.styles.module.css';
 
-const Home = ({ onLogout }) => {
+const Home = props => {
 	return (
 		<Fragment>
-			<NavHeader />
-
 			<div className={classes.products__list}>
 				<ProductCard />
 				<ProductCard />

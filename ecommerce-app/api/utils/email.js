@@ -3,7 +3,6 @@ const pug = require('pug');
 const path = require('path');
 const { htmlToText } = require('html-to-text');
 const dotenv = require('dotenv');
-const { basename } = require('path');
 
 dotenv.config({ path: './config.env' });
 
@@ -22,7 +21,6 @@ class Email {
 				},
 			});
 		}
-
 
 		return nodemailer.createTransport({
 			host: 'smtp.mailtrap.io',
@@ -62,9 +60,7 @@ class Email {
 		await this.send('welcome', 'New account!', { username, email });
 	}
 
-	async sendOrder(products, totalPrice, name) {
-
-	}
+	async sendOrder(products, totalPrice, name) {}
 }
 
 module.exports = { Email };

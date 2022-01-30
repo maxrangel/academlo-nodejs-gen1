@@ -1,8 +1,19 @@
+import { useDispatch } from 'react-redux';
 import { Link } from 'react-router-dom';
+
+// Redux
+import { userActions } from '../../../store/reducers/user.reducer';
 
 import classes from './nav-header.styles.module.css';
 
 const NavHeader = () => {
+	const dispatch = useDispatch();
+
+	// Handlers
+	const onLogoutHandler = () => {
+		dispatch(userActions.logout());
+	};
+
 	return (
 		<div className={classes.nav}>
 			<Link className={classes['title-container']} to="/">
@@ -21,7 +32,7 @@ const NavHeader = () => {
 				<Link className={classes.option} to="/profile">
 					View profile
 				</Link>
-				<Link className={classes.option} to="/auth">
+				<Link onClick={onLogoutHandler} className={classes.option} to="/auth">
 					Log out
 				</Link>
 			</div>
