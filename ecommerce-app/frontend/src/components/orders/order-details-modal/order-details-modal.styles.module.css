@@ -1,0 +1,21 @@
+.details__header {
+}
+
+.details__items {
+}
+
+.item {
+	display: flex;
+	flex-direction: row;
+	justify-content: space-around;
+}
+
+.item__name,
+.item__qty,
+.item__price {
+	font-size: 20px;
+}
+
+.item__name {
+	font-weight: bold;
+}

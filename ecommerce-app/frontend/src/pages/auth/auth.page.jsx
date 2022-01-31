@@ -13,7 +13,7 @@ const Auth = props => {
 
 	// State
 	const [showLoginForm, setShowLoginForm] = useState(true);
-	const isAuth = useSelector(state => state.userReducer.isAuth);
+	const isAuth = useSelector(state => state.user.isAuth);
 
 	// Effects
 	useEffect(() => {

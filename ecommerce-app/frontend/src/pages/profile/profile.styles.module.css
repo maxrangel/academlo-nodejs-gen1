@@ -1,0 +1,14 @@
+.user-data {
+	display: flex;
+	flex-direction: row;
+	justify-content: space-around;
+	align-items: center;
+}
+
+.user-data__username {
+  font-size: 24px;
+}
+
+.button-container {
+  width: 200px;
+}

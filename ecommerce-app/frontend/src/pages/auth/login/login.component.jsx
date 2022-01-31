@@ -3,7 +3,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 
 // Redux
-import { userActions } from '../../../store/reducers/user.reducer';
+import { userActions } from '../../../store/slices/user.slice';
 
 // Components
 import Input from '../../../components/UI/input/input.component';

@@ -13,6 +13,7 @@ const ProductCard = () => {
 				</div>
 
 				<div className={classes['button-container']}>
+					{/* TODO: DONT SHOW THIS BUTTON IF THE USER IS THE OWNER OF THE PRODUCT */}
 					<Button label="Add to Cart" />
 				</div>
 			</div>

@@ -2,7 +2,7 @@ import { useDispatch } from 'react-redux';
 import { Link } from 'react-router-dom';
 
 // Redux
-import { userActions } from '../../../store/reducers/user.reducer';
+import { userActions } from '../../../store/slices/user.slice';
 
 import classes from './nav-header.styles.module.css';
 

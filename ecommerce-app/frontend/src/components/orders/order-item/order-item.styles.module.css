@@ -1,0 +1,24 @@
+.order-item {
+	display: flex;
+	flex-direction: row;
+	align-items: center;
+	justify-content: space-around;
+
+	border: 3px solid black;
+	width: 100%;
+	padding: 10px;
+	margin-bottom: 10px;
+}
+
+.order-item__data {
+	display: flex;
+	flex-direction: column;
+}
+
+.order-item__button {
+}
+
+.order-item__price {
+	font-size: 20px;
+	font-style: italic;
+}

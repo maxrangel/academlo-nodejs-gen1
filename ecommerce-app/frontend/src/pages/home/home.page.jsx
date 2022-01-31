@@ -8,7 +8,7 @@ import classes from './home.styles.module.css';
 const Home = props => {
 	return (
 		<Fragment>
-			<ProductsList />
+			<ProductsList products={[]} />
 		</Fragment>
 	);
 };
