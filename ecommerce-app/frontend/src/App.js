@@ -19,6 +19,8 @@ import './App.css';
 const App = () => {
 	const navigate = useNavigate();
 
+	console.log(process.env.REACT_APP_API_URL);
+
 	// State (Redux)
 	const isAuth = useSelector(state => state.user.isAuth);
 

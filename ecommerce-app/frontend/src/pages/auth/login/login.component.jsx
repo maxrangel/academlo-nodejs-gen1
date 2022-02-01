@@ -3,7 +3,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 
 // Redux
-import { userActions } from '../../../store/slices/user.slice';
+import { login } from '../../../store/actions/user.actions';
 
 // Components
 import Input from '../../../components/UI/input/input.component';
@@ -26,15 +26,15 @@ const Login = ({ showSignupForm }) => {
 		const emailValue = emailInputRef.current.value;
 		const passwordValue = passwordInputRef.current.value;
 
-		// if (
-		// 	emailValue.trim().length === 0 ||
-		// 	passwordValue.trim().length ||
-		// 	passwordValue.includes('@')
-		// ) {
-		// 	return;
-		// }
+		if (
+			emailValue.trim().length === 0 ||
+			passwordValue.trim().length === 0 ||
+			!emailValue.includes('@')
+		) {
+			return;
+		}
 
-		dispatch(userActions.login({ email: emailValue, password: passwordValue }));
+		dispatch(login(emailValue, passwordValue));
 		navigate('/');
 	};
 
