@@ -1,0 +1,13 @@
+{
+  "name": "ecommerce-app",
+  "version": "1.0.0",
+  "description": "",
+  "main": "api/server.js",
+  "scripts": {
+    "start": "cd api && npm start",
+    "heroku-prebuild": "cd api && npm install --only=prod"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC"
+}
