@@ -13,6 +13,10 @@ dotenv.config({ path: './config.env' });
 
 initModels();
 
+db.authenticate()
+	.then(() => console.log('DB authenticated'))
+	.catch(err => console.log(err));
+
 db.sync()
 	.then(() => {
 		console.log('Database connected');
@@ -24,6 +28,6 @@ const startServer = () => {
 	const PORT = process.env.PORT || 4000;
 
 	app.listen(PORT, () => {
-		console.log(`Ecommerce API running on port ${PORT}!`);
+		console.log(`Ecommerce API running on port ${PORT}!!!!`);
 	});
 };

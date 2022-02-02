@@ -1,5 +1,5 @@
 import { Fragment, useEffect } from 'react';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 
 // Redux
 import { fetchProducts } from '../../store/actions/products.actions';
@@ -12,13 +12,17 @@ import classes from './home.styles.module.css';
 const Home = props => {
 	const dispatch = useDispatch();
 
+	// State (Redux)
+	const products = useSelector(state => state.products.products);
+
+	// Effects
 	useEffect(() => {
 		dispatch(fetchProducts());
 	}, [dispatch]);
 
 	return (
 		<Fragment>
-			<ProductsList products={[]} />
+			<ProductsList products={products} />
 		</Fragment>
 	);
 };

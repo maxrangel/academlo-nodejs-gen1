@@ -1,4 +1,8 @@
 import { useRef } from 'react';
+import { useDispatch } from 'react-redux';
+
+// Redux
+import { signup } from '../../../store/actions/user.actions';
 
 // Components
 import Input from '../../../components/UI/input/input.component';
@@ -8,6 +12,8 @@ import FormContainer from '../../../components/UI/form-container/form-container.
 import classes from './signup.styles.module.css';
 
 const SignUp = ({ showLoginForm }) => {
+	const dispatch = useDispatch();
+
 	// Refs
 	const usernameInputRef = useRef();
 	const emailInputRef = useRef();
@@ -15,6 +21,26 @@ const SignUp = ({ showLoginForm }) => {
 
 	const onSubmitHandler = e => {
 		e.preventDefault();
+
+		const usernameValue = usernameInputRef.current.value;
+		const emailValue = emailInputRef.current.value;
+		const passwordValue = passwordInputRef.current.value;
+
+		if (
+			!emailValue.includes('@') ||
+			passwordValue.trim().length < 8 ||
+			usernameValue.trim().length === 0
+		) {
+			return;
+		}
+
+		const userData = {
+			name: usernameValue,
+			email: emailValue,
+			password: passwordValue,
+		};
+
+		dispatch(signup(userData));
 	};
 
 	return (
@@ -26,20 +52,18 @@ const SignUp = ({ showLoginForm }) => {
 				</p>
 				<Input
 					label="Username"
-					ref={usernameInputRef}
-					input={{ id: 'username', type: 'text' }}
+					input={{ id: 'username', type: 'text', ref: usernameInputRef }}
 				/>
 				<Input
 					label="Email"
-					ref={emailInputRef}
-					input={{ id: 'email', type: 'email' }}
+					input={{ id: 'email', type: 'email', ref: emailInputRef }}
 				/>
 				<Input
 					label="Password"
-					ref={passwordInputRef}
 					input={{
 						id: 'password',
 						type: 'password',
+						ref: passwordInputRef,
 					}}
 				/>
 

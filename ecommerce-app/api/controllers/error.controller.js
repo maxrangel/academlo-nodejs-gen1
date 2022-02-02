@@ -2,8 +2,11 @@
 const { AppError } = require('../utils/appError');
 
 const sendErrorDev = (err, req, res, next) => {
-	return res.status(err.statusCode).json({
-		status: err.status,
+	const statusCode = err.statusCode || 500;
+	const status = err.status || 'fail';
+
+	return res.status(statusCode).json({
+		status,
 		error: err,
 		message: err.message,
 		stack: err.stack,
@@ -42,10 +45,9 @@ const globalErrorHandler = (err, req, res, next) => {
 		// Catch known errors
 		if (err.name === 'SequelizeUniqueConstraintError')
 			error = handleDuplicateValues();
-		if (err.name === 'JsonWebTokenError')
-			error = handleJWTInvalidSignature();
+		if (err.name === 'JsonWebTokenError') error = handleJWTInvalidSignature();
 		if (err.name === 'TokenExpiredError') error = handleJWTExpiration();
-		
+
 		sendErrorProd(error, req, res, next);
 	}
 };

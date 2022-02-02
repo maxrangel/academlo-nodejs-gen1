@@ -18,7 +18,7 @@ const AddProduct = () => {
 	const categoryInputRef = useRef();
 	const imageInputRef = useRef();
 
-	const onSubmitHandler = async e => {
+	const onSubmitHandler = e => {
 		e.preventDefault();
 
 		// Use this syntax when handling files, this converts it to multipart/form-data
@@ -30,6 +30,8 @@ const AddProduct = () => {
 		productFormData.append('quantity', +quantityInputRef.current.value);
 		productFormData.append('category', categoryInputRef.current.value);
 		productFormData.append('productImgs', imageInputRef.current.files[0]);
+
+		// TODO: SEND PRODUCT DATA TO SAVE IT ON THE DB
 
 		navigate('/');
 	};

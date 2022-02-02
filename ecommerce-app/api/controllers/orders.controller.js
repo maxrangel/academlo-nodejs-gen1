@@ -217,3 +217,11 @@ exports.purchaseOrder = catchAsync(async (req, res, next) => {
 
 // Create a controller a function that gets all the user's orders
 // The response must include all products that purchased
+
+exports.getOrderById = catchAsync(async (req, res, next) => {
+	// Find the order by a given ID
+	// Must include the products of that order
+	// Must get the total price of the order and the prices of the products and how much the user bought
+	
+	res.status(200).json({ status: 'success' })
+})
