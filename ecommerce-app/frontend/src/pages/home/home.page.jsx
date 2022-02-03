@@ -14,11 +14,12 @@ const Home = props => {
 
 	// State (Redux)
 	const products = useSelector(state => state.products.products);
+	const token = useSelector(state => state.user.token);
 
 	// Effects
 	useEffect(() => {
-		dispatch(fetchProducts());
-	}, [dispatch]);
+		dispatch(fetchProducts(token));
+	}, [token, dispatch]);
 
 	return (
 		<Fragment>

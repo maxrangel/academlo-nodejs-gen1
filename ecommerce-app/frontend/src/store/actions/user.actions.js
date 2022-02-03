@@ -13,7 +13,11 @@ export const login = (email, password) => {
 				}
 			);
 
-			dispatch(userActions.login({ userId: response.data.data.user.id }));
+			const { user, token } = response.data.data;
+
+			sessionStorage.setItem('token', token);
+
+			dispatch(userActions.login({ userId: user.id, token }));
 		} catch (error) {
 			console.log(error);
 		}
@@ -27,5 +31,11 @@ export const signup = userData => {
 		} catch (error) {
 			console.log(error);
 		}
+	};
+};
+
+export const checkUserAuth = token => {
+	return dispatch => {
+		dispatch(userActions.checkAuth({ userAuth: !!token, token }));
 	};
 };

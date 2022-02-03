@@ -13,7 +13,7 @@ const ProductsList = ({ products }) => {
 				userId={1}
 			/> */}
 			{products.map(product => (
-				<ProductCard key={`p_${product.name}`} product={product} />
+				<ProductCard key={product.id} product={product} />
 			))}
 		</div>
 	);

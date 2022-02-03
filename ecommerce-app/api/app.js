@@ -29,6 +29,9 @@ app.use(xss());
 app.use(helmet());
 app.use(compression());
 
+// Implement CORS
+app.use(cors({ credentials: true, origin: 'http://localhost:3000' })); //Access-Control-Allow-Origin *
+
 app.use(
 	rateLimit({
 		max: 1000,
@@ -42,10 +45,6 @@ app.set('view-engine', 'pug');
 
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
-
-// Implement CORS
-app.use(cors()); //Access-Control-Allow-Origin *
-app.options('*', cors());
 
 app.use(cookieParser());
 

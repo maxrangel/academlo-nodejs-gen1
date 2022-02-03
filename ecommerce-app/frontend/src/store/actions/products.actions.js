@@ -2,18 +2,19 @@ import axios from 'axios';
 
 import { productsActions } from '../slices/products.slice';
 
-export const fetchProducts = () => {
+export const fetchProducts = token => {
 	return async dispatch => {
 		try {
-			// TODO: FETCH PRODUCTS FROM THE DB
 			const response = await axios.get(
 				`${process.env.REACT_APP_API_URL}/products`,
-				
+				{ headers: { authorization: `Bearer ${token}` } }
 			);
 
-			console.log(response);
+			const { products } = response.data.data;
 
-			dispatch(productsActions.getProducts({ products: [] }));
+			console.log(products);
+
+			dispatch(productsActions.getProducts({ products }));
 		} catch (error) {
 			console.log(error);
 		}

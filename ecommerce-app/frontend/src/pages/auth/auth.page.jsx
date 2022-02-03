@@ -1,6 +1,9 @@
 import { Fragment, useState, useEffect } from 'react';
-import { useSelector } from 'react-redux';
+import { useSelector, useDispatch } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
+
+// Redux
+import { checkUserAuth } from '../../store/actions/user.actions';
 
 // Components
 import Login from './login/login.component';
@@ -10,12 +13,19 @@ import classes from './auth.styles.module.css';
 
 const Auth = props => {
 	const navigate = useNavigate();
+	const dispatch = useDispatch();
 
 	// State
 	const [showLoginForm, setShowLoginForm] = useState(true);
 	const isAuth = useSelector(state => state.user.isAuth);
 
 	// Effects
+	useEffect(() => {
+		const token = sessionStorage.getItem('token');
+
+		dispatch(checkUserAuth(token));
+	}, [dispatch]);
+
 	useEffect(() => {
 		if (isAuth) navigate('/');
 	}, [isAuth, navigate]);

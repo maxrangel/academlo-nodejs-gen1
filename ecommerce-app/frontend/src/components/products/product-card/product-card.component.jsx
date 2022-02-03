@@ -43,7 +43,7 @@ const ProductCard = ({ product }) => {
 
 			<div className={classes.card__body}>
 				<p className={classes.product__description}>{product.description}</p>
-				<p className={classes.product__price}>${+product.price.toFixed(2)}</p>
+				<p className={classes.product__price}>${product.price}</p>
 			</div>
 		</div>
 	);
