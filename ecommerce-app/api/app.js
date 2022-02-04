@@ -26,8 +26,6 @@ const app = express();
 app.enable('trust proxy');
 
 app.use(xss());
-app.use(helmet());
-app.use(compression());
 
 // Implement CORS
 app.use(cors({ credentials: true, origin: 'http://localhost:3000' })); //Access-Control-Allow-Origin *
@@ -47,6 +45,9 @@ app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
 
 app.use(cookieParser());
+
+app.use(helmet());
+app.use(compression());
 
 if (process.env.NODE_ENV === 'development') app.use(morgan('dev'));
 else app.use(morgan('combined'));

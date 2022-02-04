@@ -2,12 +2,15 @@
 const { Product } = require('../models/product.model');
 const { Cart } = require('../models/cart.model');
 const { ProductInCart } = require('../models/productInCart.model');
+const { Order } = require('../models/order.model');
+const { ProductInOrder } = require('../models/productInOrder.model');
 
 // Utils
 const { catchAsync } = require('../utils/catchAsync');
 const { filterObj } = require('../utils/filterObj');
 const { AppError } = require('../utils/appError');
 const { formatUserCart } = require('../utils/queryFormat');
+const { Email } = require('../utils/email');
 
 exports.getUserCart = catchAsync(async (req, res, next) => {
 	const { currentUser } = req;
@@ -31,6 +34,8 @@ exports.getUserCart = catchAsync(async (req, res, next) => {
 			},
 		],
 	});
+
+	if (!cart) return next(new AppError('Cart not found', 404));
 
 	const formattedCart = formatUserCart(cart);
 
@@ -191,37 +196,82 @@ exports.updateProductCart = catchAsync(async (req, res, next) => {
 });
 
 exports.purchaseOrder = catchAsync(async (req, res, next) => {
+	const { currentUser } = req;
 	// 1st part:
 	// Get user's cart and get the products of the cart
+	const cart = await Cart.findOne({
+		where: { userId: currentUser.id, status: 'onGoing' },
+		include: [{ model: ProductInCart, include: [{ model: Product }] }],
+	});
+
+	if (!cart) return next(new AppError('Cart not found', 404));
+
 	// Set Cart status to 'purchased'
+	await cart.update({ status: 'purchased' });
+
 	// Create a new order
-
-	// [Promise]
-	// const promises = products.map(async () => {
-	// 	await Product.findAll()
-	// })
-
-	// await Promise.all(promises)
+	const newOrder = await Order.create({
+		userId: currentUser.id,
+		totalPrice: cart.totalPrice,
+		date: new Date().toLocaleString(),
+	});
 
 	// Loop through the products array, for each product
-	// Set productInCart status to 'purchased', search for cartId and productId
-	// Look for the Product (productId), substract and update the requested qty from the product's qty
-	// Create productInOrder, pass orderId, productId, qty, price
+	const promises = cart.productsInCarts.map(async productInCart => {
+		// Set productInCart status to 'purchased'
+		await productInCart.update({ status: 'purchased' });
+
+		// Look for the Product (productId), substract and update the requested qty from the product's qty
+		const updatedProduct = await Product.findOne({
+			id: productInCart.productId,
+		});
+
+		const updatedQty = +updatedProduct.quantity - +productInCart.quantity;
+
+		await updatedProduct.update({ quantity: updatedQty });
+
+		// Create productInOrder, pass orderId, productId, qty, price
+		return await ProductInOrder.create({
+			orderId: newOrder.id,
+			productId: productInCart.productId,
+			price: productInCart.price,
+			quantity: productInCart.quantity,
+		});
+	});
+
+	await Promise.all(promises);
 
 	// 2nd part:
 	// Send email to the user that purchased the order
+	const orderMail = new Email(currentUser.email);
+
 	// The email must contain the total price and the list of products that it purchased
+	await orderMail.sendOrder(
+		cart.productsInCarts,
+		cart.totalPrice,
+		currentUser.name
+	);
 
 	res.status(200).json({ status: 'success' });
 });
 
 // Create a controller a function that gets all the user's orders
+exports.getAllOrders = catchAsync(async (req, res, next) => {
+	const { currentUser } = req;
+	
+	const orders = await Order.findAll({
+		where: { userId: currentUser.id },
+		include: [{ model: ProductInOrder }],
+	});
+
+	res.status(200).json({ status: 'success', data: { orders } });
+});
 // The response must include all products that purchased
 
 exports.getOrderById = catchAsync(async (req, res, next) => {
 	// Find the order by a given ID
 	// Must include the products of that order
 	// Must get the total price of the order and the prices of the products and how much the user bought
-	
-	res.status(200).json({ status: 'success' })
-})
+
+	res.status(200).json({ status: 'success' });
+});

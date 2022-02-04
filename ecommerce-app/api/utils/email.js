@@ -60,7 +60,13 @@ class Email {
 		await this.send('welcome', 'New account!', { username, email });
 	}
 
-	async sendOrder(products, totalPrice, name) {}
+	async sendOrder(products, totalPrice, name) {
+		await this.send('receipt', 'A new order was created', {
+			products,
+			totalPrice,
+			name,
+		});
+	}
 }
 
 module.exports = { Email };

@@ -33,7 +33,7 @@ const productRelations = () => {
 	ProductImg.belongsTo(Product);
 
 	// 1 Product <--> ProductInOrder M
-	Product.hasOne(ProductInOrder);
+	Product.hasOne(ProductInOrder); 
 	ProductInOrder.belongsTo(Product);
 
 	// 1 Product <--> ProductInCart 1
