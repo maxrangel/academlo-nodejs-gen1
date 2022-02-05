@@ -6,8 +6,7 @@ export const fetchProducts = token => {
 	return async dispatch => {
 		try {
 			const response = await axios.get(
-				`${process.env.REACT_APP_API_URL}/products`,
-				{ headers: { authorization: `Bearer ${token}` } }
+				`${process.env.REACT_APP_API_URL}/products`
 			);
 
 			const { products } = response.data.data;

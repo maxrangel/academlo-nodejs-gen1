@@ -25,40 +25,51 @@ const app = express();
 
 app.enable('trust proxy');
 
-app.use(xss());
+app.set('view engine', 'pug');
+app.set('views', path.join(__dirname, 'views'));
 
+// Global Middlewares
 // Implement CORS
-app.use(cors({ credentials: true, origin: 'http://localhost:3000' })); //Access-Control-Allow-Origin *
+app.use(cors()); //Access-Control-Allow-Origin *
+app.options('*', cors());
 
-app.use(
-	rateLimit({
-		max: 1000,
-		windowMs: 60 * 60 * 1000, // 1 hour
-		message: 'Too many requests from this IP',
-	})
-);
+// Serving static files
+app.use(express.static(path.join(__dirname, 'client', 'build')));
 
-app.use(express.static(path.join(__dirname, 'views')));
-app.set('view-engine', 'pug');
-
-app.use(express.urlencoded({ extended: true }));
-app.use(express.json());
-
-app.use(cookieParser());
-
+// Set security HTTP headers
 app.use(helmet());
-app.use(compression());
 
+// Development logging
 if (process.env.NODE_ENV === 'development') app.use(morgan('dev'));
 else app.use(morgan('combined'));
+
+// Limit requests from same API
+const limiter = rateLimit({
+	max: 100,
+	windowMs: 60 * 60 * 1000, // 1 hour
+	message: 'Too many requests from this IP, please try again in an hour!',
+});
+app.use('/api', limiter);
+
+// Body parser, reading data from the body into req.body
+app.use(express.json());
+app.use(express.urlencoded({ extended: true }));
+app.use(cookieParser());
+
+// Data sanitization against XSS
+app.use(xss());
+
+// Compress responses
+app.use(compression());
 
 // Endpoints
 app.use('/api/v1/users', userRouter);
 app.use('/api/v1/products', productsRouter);
 app.use('/api/v1/orders', ordersRouter);
+// http://localhost:4000/ -> REACT
 app.use('/', viewsRouter);
 
-app.use('*', (req, res, next) => {
+app.all('*', (req, res, next) => {
 	next(new AppError(`Can't find ${req.originalUrl} on this server`, 404));
 });
 
