@@ -10,7 +10,7 @@ const Form = ({ onAddTodo }) => {
 	const [todo, setTodo] = useState('');
 	const [showError, setShowError] = useState(false);
 
-	const onSubmitHandler = event => {
+	const onSubmitHandler = async event => {
 		event.preventDefault();
 
 		// Show error if input is empty
@@ -18,8 +18,6 @@ const Form = ({ onAddTodo }) => {
 			setShowError(true);
 			return;
 		}
-
-		// TODO: Send data to API
 
 		// Send data to App.js
 		const newTodo = {
@@ -44,7 +42,7 @@ const Form = ({ onAddTodo }) => {
 		<form onSubmit={onSubmitHandler} className={classes.form}>
 			<div className={classes.form__container}>
 				<label className={classes.form__label} htmlFor="todo">
-					Enter your To Dodfasdfasdfsa:
+					Enter your To Do:
 				</label>
 				<input
 					className={`${classes.form__input} ${showError ? classes.error : ''}`}
