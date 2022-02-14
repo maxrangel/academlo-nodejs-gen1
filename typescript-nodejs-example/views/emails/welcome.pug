@@ -1,0 +1,16 @@
+extends base
+
+block emailContent
+  p Hi #{username}
+  p You successfully created an account with the email "#{email}" on our Academlo Shop app 
+  p Enjoy your visit on our page and contact support if you need anything
+  p Good luck! Hope it works.
+
+  table.body(role='presentation' cellspacing='0' cellpadding='0' border='0')
+    tbody
+      tr
+        th Username
+        th Email 
+      tr 
+        td.align-center #{username}
+        td.align-center #{email}

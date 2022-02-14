@@ -1,21 +1,21 @@
-const jwt = require('jsonwebtoken');
-const dotenv = require('dotenv');
-const { Op } = require('sequelize');
-const { promisify } = require('util');
+import jwt from 'jsonwebtoken';
+import dotenv from 'dotenv';
+import { Op } from 'sequelize';
+import { promisify } from 'util';
 
 // require('crypto').randomBytes(64).toString('hex')
 
 // Models
-const { User } = require('../models/user.model');
-const { Product } = require('../models/product.model');
+import { User } from '../models/user.model.ts';
+import { Product } from '../models/product.model';
 
 // Utils
-const { catchAsync } = require('../utils/catchAsync');
-const { AppError } = require('../utils/appError');
+import { catchAsync } from '../utils/catchAsync';
+import { AppError } from '../utils/appError';
 
 dotenv.config({ path: './config.env' });
 
-exports.protectSession = catchAsync(async (req, res, next) => {
+export const protectSession = catchAsync(async (req, res, next) => {
 	let token;
 
 	if (
@@ -51,7 +51,7 @@ exports.protectSession = catchAsync(async (req, res, next) => {
 	next();
 });
 
-exports.protectProductOwner = catchAsync(async (req, res, next) => {
+export const protectProductOwner = catchAsync(async (req, res, next) => {
 	const { id } = req.params;
 	const { currentUser } = req;
 

@@ -1,6 +1,12 @@
 import classes from './button.styles.module.css';
 
-const Button = ({ onClick, label, type }) => {
+interface ButtonProps {
+	onClick: () => void;
+	label: string;
+	type?: 'submit' | 'button' | 'reset';
+}
+
+const Button = ({ onClick, label, type }: ButtonProps) => {
 	return (
 		<button
 			className={classes.button}

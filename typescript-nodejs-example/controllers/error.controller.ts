@@ -1,7 +1,15 @@
-// Utils
-const { AppError } = require('../utils/appError');
+import { Request, Response, NextFunction } from 'express';
+import { ValidationError } from 'sequelize';
 
-const sendErrorDev = (err, req, res, next) => {
+// Utils
+import { AppError } from '../utils/appError';
+
+const sendErrorDev = (
+	err: AppError,
+	req: Request,
+	res: Response,
+	next: NextFunction
+) => {
 	const statusCode = err.statusCode || 500;
 	const status = err.status || 'fail';
 
@@ -13,14 +21,19 @@ const sendErrorDev = (err, req, res, next) => {
 	});
 };
 
-const sendErrorProd = (err, req, res, next) => {
+const sendErrorProd = (
+	err: AppError,
+	req: Request,
+	res: Response,
+	next: NextFunction
+) => {
 	return res.status(err.statusCode).json({
 		status: err.status,
 		message: err.message || 'Something went wrong!',
 	});
 };
 
-const handleDuplicateValues = err => {
+const handleDuplicateValues = () => {
 	return new AppError('Email is already taken', 400);
 };
 
@@ -32,12 +45,17 @@ const handleJWTExpiration = () => {
 	return new AppError('Session expired, try log in again', 403);
 };
 
-const handleSequelizeValidationError = error => {
+const handleSequelizeValidationError = (error: ValidationError) => {
 	const message = error.errors.map(({ message }) => message).join('. ');
 	return new AppError(message, 500);
 };
 
-const globalErrorHandler = (err, req, res, next) => {
+const globalErrorHandler = (
+	err: AppError,
+	req: Request,
+	res: Response,
+	next: NextFunction
+) => {
 	err.statusCode = err.statusCode || 500;
 	err.status = err.status || 'error';
 
@@ -60,4 +78,4 @@ const globalErrorHandler = (err, req, res, next) => {
 	}
 };
 
-module.exports = { globalErrorHandler };
+export { globalErrorHandler };

@@ -1,6 +1,7 @@
-const { DataTypes } = require('sequelize');
-const { db } = require('../utils/database');
-const { AppError } = require('../utils/appError');
+import { DataTypes } from 'sequelize';
+
+import { db } from '../utils/database';
+import { AppError } from '../utils/appError';
 
 const Product = db.define(
 	'products',
@@ -43,7 +44,7 @@ const Product = db.define(
 		},
 		status: {
 			type: DataTypes.STRING(20),
-			allowNull: 'false',
+			allowNull: false,
 			// active | deleted | soldOut
 			defaultValue: 'active',
 			validate: {
@@ -69,4 +70,4 @@ Product.addHook('afterUpdate', async (product, options) => {
 	}
 });
 
-module.exports = { Product };
+export { Product };

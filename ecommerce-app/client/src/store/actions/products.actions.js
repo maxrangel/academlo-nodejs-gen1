@@ -5,9 +5,7 @@ import { productsActions } from '../slices/products.slice';
 export const fetchProducts = token => {
 	return async dispatch => {
 		try {
-			const response = await axios.get(
-				`${process.env.REACT_APP_API_URL}/products`
-			);
+			const response = await axios.get(`/api/v1/products`);
 
 			const { products } = response.data.data;
 

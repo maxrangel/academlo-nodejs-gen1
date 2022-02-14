@@ -1,0 +1,9 @@
+extends base
+
+block content
+  p #{message}
+  p Hello from welcome.pug
+  p Pug is the best!
+  ul 
+    each user in users
+      li Name: #{user.name} / Age: #{user.age} / 

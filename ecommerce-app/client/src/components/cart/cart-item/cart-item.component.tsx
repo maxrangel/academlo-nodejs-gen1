@@ -9,7 +9,7 @@ const CartItem = ({ product }) => {
 	const { name, requestedQty, price } = product;
 
 	// State
-	const [updateQty, setUpdateQty] = useState(requestedQty);
+	const [updateQty, setUpdateQty] = useState<number>(requestedQty);
 
 	// Refs
 	const updateQtyInputRef = useRef();
@@ -43,7 +43,7 @@ const CartItem = ({ product }) => {
 					className={classes['update-qty-input']}
 				/>
 				<Button type="button" onClick={onUpdateProductHandler} label="Update" />
-				<Button type="button" label="Remove" />
+				<Button onClick={() => {}} type="button" label="Remove" />
 			</div>
 		</div>
 	);

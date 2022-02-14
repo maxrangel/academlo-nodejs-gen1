@@ -1,24 +1,23 @@
-const express = require('express');
-const cors = require('cors');
-const cookieParser = require('cookie-parser');
-const xss = require('xss-clean');
-const rateLimit = require('express-rate-limit');
-const path = require('path');
-const helmet = require('helmet');
-const compression = require('compression');
-const morgan = require('morgan');
+import express from 'express';
+import cors from 'cors';
+import cookieParser from 'cookie-parser';
+import xss from 'xss-clean';
+import rateLimit from 'express-rate-limit';
+import path from 'path';
+import helmet from 'helmet';
+import compression from 'compression';
+import morgan from 'morgan';
 
 // Routers
-const { userRouter } = require('./routes/users.routes');
-const { productsRouter } = require('./routes/products.routes');
-const { ordersRouter } = require('./routes/orders.routes');
-const { viewsRouter } = require('./routes/views.routes');
+import { userRouter } from './routes/users.routes';
+import { productsRouter } from './routes/products.routes';
+import { ordersRouter } from './routes/orders.routes';
 
 // Controllers
-const { globalErrorHandler } = require('./controllers/error.controller');
+import { globalErrorHandler } from './controllers/error.controller';
 
 // Utils
-const { AppError } = require('./utils/appError');
+import { AppError } from './utils/appError';
 
 // Init app
 const app = express();
@@ -32,9 +31,6 @@ app.set('views', path.join(__dirname, 'views'));
 // Implement CORS
 app.use(cors()); //Access-Control-Allow-Origin *
 app.options('*', cors());
-
-// Serving static files
-app.use(express.static(path.join(__dirname, 'client', 'build')));
 
 // Set security HTTP headers
 app.use(helmet());
@@ -62,13 +58,10 @@ app.use(xss());
 // Compress responses
 app.use(compression());
 
-// https://ecommerce-academlo-gen1.herokuapp.com/api/v1/products
 // Endpoints
 app.use('/api/v1/users', userRouter);
 app.use('/api/v1/products', productsRouter);
 app.use('/api/v1/orders', ordersRouter);
-// http://localhost:4000/ -> REACT
-app.use('/', viewsRouter);
 
 app.all('*', (req, res, next) => {
 	next(new AppError(`Can't find ${req.originalUrl} on this server`, 404));
@@ -76,4 +69,4 @@ app.all('*', (req, res, next) => {
 
 app.use(globalErrorHandler);
 
-module.exports = { app };
+export { app };

@@ -5,8 +5,9 @@ import { userActions } from '../slices/user.slice';
 export const login = (email, password) => {
 	return async dispatch => {
 		try {
+			// https://ecommerce-academlo-gen1.herokuapp.com/api/v1/users/login
 			const response = await axios.post(
-				`${process.env.REACT_APP_API_URL}/users/login`,
+				`/api/v1/users/login`,
 				{
 					email,
 					password,

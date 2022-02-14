@@ -1,10 +1,19 @@
-const { DataTypes } = require('sequelize');
-const bcrypt = require('bcryptjs');
+import { DataTypes, Model, Optional } from 'sequelize';
+import bcrypt from 'bcryptjs';
 
-const { AppError } = require('../utils/appError');
-const { db } = require('../utils/database');
+import { AppError } from '../utils/appError';
+import { db } from '../utils/database';
 
-const User = db.define(
+export interface UserInstance extends Model {
+	id: number;
+	name: string;
+	email: string;
+	password: string;
+	role: 'standard' | 'admin';
+	status: 'available' | 'deleted' | 'banned';
+}
+
+const User = db.define<UserInstance>(
 	'users',
 	{
 		id: {
@@ -45,7 +54,7 @@ const User = db.define(
 			// available | deleted | banned
 			defaultValue: 'available',
 			validate: {
-				checkStatus(val) {
+				checkStatus(val: string) {
 					const status = ['available', 'deleted', 'banned'];
 
 					if (!status.includes(val))
@@ -57,11 +66,11 @@ const User = db.define(
 	{ timestamps: false }
 );
 
-User.addHook('beforeCreate', async (user, options) => {
+User.addHook('beforeCreate', async (user: UserInstance, options) => {
 	const salt = await bcrypt.genSalt(12);
 	const hashedPassword = await bcrypt.hash(user.password, salt);
 
 	user.password = hashedPassword;
 });
 
-module.exports = { User };
+export { User };

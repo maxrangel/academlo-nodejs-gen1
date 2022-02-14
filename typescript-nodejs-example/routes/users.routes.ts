@@ -1,25 +1,22 @@
-const express = require('express');
+import express from 'express';
 
 // Controllers
-const {
+import {
 	createUser,
 	getUserById,
 	updateUser,
 	disableUserAccount,
 	loginUser,
-} = require('../controllers/users.controller');
+} from '../controllers/users.controller';
 
 // Middlewares
-const {
-	protectSession,
-	protectUser,
-} = require('../middlewares/auth.middleware');
-const {
+import { protectSession } from '../middlewares/auth.middleware';
+import {
 	createUserValidations,
 	updateUserValidations,
 	loginUserValidations,
 	validateResult,
-} = require('../middlewares/validators.middleware');
+} from '../middlewares/validators.middleware';
 
 const router = express.Router();
 
@@ -48,4 +45,4 @@ router
 // Get - Get user by id
 router.get('/:id', getUserById);
 
-module.exports = { userRouter: router };
+export { router as userRouter };

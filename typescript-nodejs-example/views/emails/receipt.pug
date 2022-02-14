@@ -1,0 +1,9 @@
+extends base
+
+block emailContent
+  p Hello #{name}, your order was succesfully purchased
+  p Your order was for a total of $#{totalPrice}
+
+  ul 
+    each product in products
+      li #{product.product.name} / #{product.quantity} $#{product.price}
